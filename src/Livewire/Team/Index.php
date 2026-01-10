@@ -7,6 +7,7 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 
 class Index extends Component
 {
@@ -14,6 +15,12 @@ class Index extends Component
 
     public Tenant $tenant;
     public bool $showInviteModal = false;
+
+    #[On('invitation-sent')]
+    public function handleInvitationSent()
+    {
+        $this->showInviteModal = false;
+    }
 
     public function mount()
     {

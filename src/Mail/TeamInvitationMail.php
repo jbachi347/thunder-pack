@@ -23,7 +23,7 @@ class TeamInvitationMail extends Mailable
     public function __construct(TeamInvitation $invitation)
     {
         $this->invitation = $invitation;
-        $this->acceptUrl = route('invitations.accept', ['token' => $invitation->token]);
+        $this->acceptUrl = route('thunder-pack.invitations.accept', ['token' => $invitation->token]);
     }
 
     /**

@@ -31,14 +31,14 @@ class TenantMiddleware
                 if (!$tenant) {
                     // The user does not have access to this tenant, so we clear session and redirect.
                     session()->forget('current_tenant_id');
-                    return redirect()->route('tenant.select')->with('error', 'Acceso no autorizado al tenant.');
+                    return redirect()->route('thunder-pack.tenant.select')->with('error', 'Acceso no autorizado al tenant.');
                 }
                 // Set the current tenant for the user.
                 $user->setCurrentTenant($tenant);
             } else {
                 // No tenant set - redirect to tenant selection if not already there
-                if (!$request->routeIs('tenant.select')) {
-                    return redirect()->route('tenant.select')->with('info', 'Por favor selecciona un tenant para continuar.');
+                if (!$request->routeIs('thunder-pack.tenant.select')) {
+                    return redirect()->route('thunder-pack.tenant.select')->with('info', 'Por favor selecciona un tenant para continuar.');
                 }
             }
         }

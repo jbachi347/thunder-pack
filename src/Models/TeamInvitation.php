@@ -67,11 +67,10 @@ class TeamInvitation extends Model
         ?int $invitedBy = null,
         int $expirationDays = 7
     ): self {
-        // Cancelar invitaciones previas pendientes
+        // Eliminar invitaciones previas (pendientes, aceptadas o expiradas)
         static::where('tenant_id', $tenantId)
             ->where('email', $email)
-            ->whereNull('accepted_at')
-            ->update(['accepted_at' => now()]); // Marcar como "cancelada"
+            ->delete();
 
         return static::create([
             'tenant_id' => $tenantId,
@@ -85,8 +84,7 @@ class TeamInvitation extends Model
 
     public function sendInvitation(): void
     {
-        // Note: This method requires a Mail class from the host application
-        // Mail::to($this->email)->send(new TeamInvitationMail($this));
+        Mail::to($this->email)->send(new \ThunderPack\Mail\TeamInvitationMail($this));
     }
 
     public function accept($user): bool

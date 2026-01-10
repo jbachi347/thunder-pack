@@ -35,7 +35,6 @@ class Invite extends Component
         // Check permissions
         if (!Auth::user()->canManageTeamInTenant($this->tenant->id)) {
             session()->flash('error', 'No tienes permiso para invitar miembros.');
-            $this->dispatch('invitation-sent');
             return;
         }
 
@@ -58,12 +57,12 @@ class Invite extends Component
             $this->reset(['email', 'role']);
             $this->role = 'staff';
             
-            // Dispatch event to parent component
+            // Dispatch event to parent component ONLY on success
             $this->dispatch('invitation-sent');
             
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
-            $this->dispatch('invitation-sent');
+            // Don't dispatch event on error, keep modal open
         }
     }
 

@@ -7,6 +7,19 @@
 
     <form wire:submit.prevent="sendInvitation">
         <div class="px-6 py-4 space-y-4">
+            <!-- Success/Error Messages -->
+            @if (session()->has('success'))
+                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 px-4 py-3 rounded-md text-sm">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-md text-sm">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <!-- Email Input -->
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

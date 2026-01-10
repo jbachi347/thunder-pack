@@ -24,7 +24,7 @@ class CheckTenantPermission
         $tenantId = session('current_tenant_id');
         
         if (!$tenantId) {
-            return redirect()->route('tenant.select');
+            return redirect()->route('thunder-pack.tenant.select');
         }
 
         $user = auth()->user();

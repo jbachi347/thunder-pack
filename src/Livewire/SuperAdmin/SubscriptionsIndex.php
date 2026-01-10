@@ -82,6 +82,6 @@ class SubscriptionsIndex extends Component
         return view('thunder-pack::livewire.super-admin.subscriptions-index', [
             'subscriptions' => $subscriptions,
             'statusCounts' => $statusCounts,
-        ])->layout('layouts.app-sidebar-sa');
+        ])->layout('thunder-pack::layouts.app-sidebar-sa');
     }
 }

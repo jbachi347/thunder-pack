@@ -54,7 +54,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <a href="{{ route('invitations.accept', $invitation->token) }}" 
+                                <a href="{{ route('thunder-pack.invitations.accept', $invitation->token) }}" 
                                    class="ml-3 inline-flex items-center px-3 py-1.5 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white text-xs font-medium rounded-md transition whitespace-nowrap">
                                     Ver Invitación
                                 </a>

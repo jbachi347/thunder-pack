@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Suscripción #{{ $subscription->id }}</h2>
-            <a href="{{ route('sa.subscriptions.index') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver a Suscripciones</a>
+            <a href="{{ route('thunder-pack.sa.subscriptions.index') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver a Suscripciones</a>
         </div>
     </x-slot>
 

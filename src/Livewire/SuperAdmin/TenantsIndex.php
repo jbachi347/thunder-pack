@@ -50,6 +50,6 @@ class TenantsIndex extends Component
 
         return view('thunder-pack::livewire.super-admin.tenants-index', [
             'tenants' => $tenants,
-        ])->layout('layouts.app-sidebar-sa');
+        ])->layout('thunder-pack::layouts.app-sidebar-sa');
     }
 }

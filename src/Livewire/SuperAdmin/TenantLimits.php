@@ -120,6 +120,6 @@ class TenantLimits extends Component
             'limits' => $limits,
             'plan' => $plan,
             'subscription' => $subscription,
-        ])->layout('layouts.app-sidebar-sa');
+        ])->layout('thunder-pack::layouts.app-sidebar-sa');
     }
 }

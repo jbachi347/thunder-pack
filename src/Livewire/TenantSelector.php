@@ -17,7 +17,7 @@ class TenantSelector extends Component
         
         // Si es super-admin, redirigir al panel SA
         if (Auth::user()->is_super_admin) {
-            return $this->redirect(route('sa.dashboard'));
+            return $this->redirect(route('thunder-pack.sa.dashboard'));
         }
         
         // Si no tiene tenants, mostrar mensaje

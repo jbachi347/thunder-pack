@@ -28,6 +28,6 @@ class Dashboard extends Component
         return view('thunder-pack::livewire.super-admin.dashboard', [
             'stats' => $stats,
             'recentTenants' => $recentTenants,
-        ])->layout('layouts.app-sidebar-sa');
+        ])->layout('thunder-pack::layouts.app-sidebar-sa');
     }
 }

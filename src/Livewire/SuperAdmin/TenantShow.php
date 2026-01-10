@@ -227,6 +227,6 @@ class TenantShow extends Component
             'whatsappStats' => $whatsappStats,
             'whatsappLogs' => $whatsappLogs,
             'whatsappConfigured' => app(WhatsAppService::class)->isConfigured(),
-        ])->layout('layouts.app-sidebar-sa');
+        ])->layout('thunder-pack::layouts.app-sidebar-sa');
     }
 }

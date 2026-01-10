@@ -34,7 +34,7 @@
                 </div>
                 <div class="divide-y divide-gray-100 dark:divide-gray-700">
                     @forelse($recentTenants as $tenant)
-                        <a href="{{ route('sa.tenants.show', $tenant) }}" class="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition text-sm">
+                        <a href="{{ route('thunder-pack.sa.tenants.show', $tenant) }}" class="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition text-sm">
                             <div class="flex justify-between items-start">
                                 <div>
                                     <div class="font-medium text-gray-900 dark:text-gray-100">{{ $tenant->name }}</div>

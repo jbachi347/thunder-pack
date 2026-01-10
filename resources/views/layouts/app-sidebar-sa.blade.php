@@ -17,6 +17,11 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+        
+        <!-- Alpine.js x-cloak support -->
+        <style>
+            [x-cloak] { display: none !important; }
+        </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900" x-data="{ sidebarOpen: false }">
@@ -27,18 +32,18 @@
                     <div class="flex items-center">
                         <button @click="sidebarOpen = !sidebarOpen" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mr-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path x-show="!sidebarOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                                <path x-show="sidebarOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" style="display: none;"></path>
+                                <path x-show="!sidebarOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                <path x-show="sidebarOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
                     </div>
 
                     <!-- Dark Mode Toggle -->
                     <button @click="darkMode = !darkMode" class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md">
-                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg x-show="!darkMode" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                         </svg>
-                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                        <svg x-show="darkMode" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
                     </button>
@@ -47,7 +52,7 @@
 
             <div class="flex h-screen overflow-hidden pt-14 lg:pt-0">
                 <!-- Sidebar -->
-                <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
+                <aside x-cloak :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" 
                        class="fixed lg:static top-0 bottom-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-sm flex flex-col transition-transform duration-300 lg:translate-x-0 h-full">
                     <!-- Logo -->
                     <div class="flex h-14 px-4 items-center border-b border-gray-200 dark:border-gray-700">
@@ -59,15 +64,15 @@
 
                     <!-- Navigation -->
                     <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-                        <a href="{{ route('sa.dashboard') }}" 
+                        <a href="{{ route('thunder-pack.sa.dashboard') }}" 
                            class="block px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('sa.dashboard') ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                             Dashboard
                         </a>
-                        <a href="{{ route('sa.tenants.index') }}" 
+                        <a href="{{ route('thunder-pack.sa.tenants.index') }}" 
                            class="block px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('sa.tenants.*') ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                             Organizaciones
                         </a>
-                        <a href="{{ route('sa.subscriptions.index') }}" 
+                        <a href="{{ route('thunder-pack.sa.subscriptions.index') }}" 
                            class="block px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('sa.subscriptions.*') ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                             Suscripciones
                         </a>
@@ -130,10 +135,10 @@
 
                             <!-- Dark Mode Toggle -->
                             <button @click="darkMode = !darkMode" class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg x-show="!darkMode" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
                                 </svg>
-                                <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
+                                <svg x-show="darkMode" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                                 </svg>
                             </button>
@@ -150,17 +155,11 @@
                 </div>
             </div>
 
-            <!-- Overlay para móvil -->
-            <div x-show="sidebarOpen" 
+            <!-- Overlay para móvil - Click to close sidebar -->
+            <div x-cloak
+                 x-show="sidebarOpen" 
                  @click="sidebarOpen = false"
-                 x-transition:enter="transition-opacity ease-linear duration-300"
-                 x-transition:enter-start="opacity-0"
-                 x-transition:enter-end="opacity-100"
-                 x-transition:leave="transition-opacity ease-linear duration-300"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 lg:hidden"
-                 style="display: none;">
+                 class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 lg:hidden">
             </div>
         </div>
         @livewireScripts

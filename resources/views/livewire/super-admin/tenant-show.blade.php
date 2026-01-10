@@ -6,32 +6,33 @@
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Gestión de organización</p>
             </div>
             <div class="flex items-center gap-3">
-                <a href="{{ route('sa.tenants.limits', $tenant) }}" 
+                <a href="{{ route('thunder-pack.sa.tenants.limits', $tenant) }}" 
                    class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-md transition">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
                     </svg>
                     Gestionar Límites
                 </a>
-                <a href="{{ route('sa.tenants.index') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver a Tenants</a>
+                <a href="{{ route('thunder-pack.sa.tenants.index') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver a Tenants</a>
             </div>
         </div>
     </div>
 
+    <!-- Flash Messages -->
     @if (session()->has('message'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-sm" role="alert">
-                    <span class="block sm:inline">{{ session('message') }}</span>
-                </div>
-            @endif
+        <div class="mb-6 bg-green-100 dark:bg-green-900/20 border border-green-400 dark:border-green-800 text-green-700 dark:text-green-200 px-4 py-3 rounded-md text-sm" role="alert">
+            <span class="block sm:inline">{{ session('message') }}</span>
+        </div>
+    @endif
 
-                @if (session()->has('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-sm" role="alert">
-                    <span class="block sm:inline">{{ session('error') }}</span>
-                </div>
-            @endif
+    @if (session()->has('error'))
+        <div class="mb-6 bg-red-100 dark:bg-red-900/20 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-200 px-4 py-3 rounded-md text-sm" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    @endif
 
-            <!-- Tabs -->
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg overflow-hidden">
+    <!-- Tabs -->
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                 <div class="border-b border-gray-200 dark:border-gray-700">
                     <nav class="flex -mb-px">
                         <button wire:click="switchTab('info')" 
@@ -57,16 +58,14 @@
                 <!-- Tab Content -->
                 <div class="p-6">
                     @if($activeTab === 'info')
-                        @include('livewire.super-admin.partials.tenant-info')
+                        @include('thunder-pack::livewire.super-admin.partials.tenant-info')
                     @elseif($activeTab === 'subscriptions')
-                        @include('livewire.super-admin.partials.tenant-subscriptions')
+                        @include('thunder-pack::livewire.super-admin.partials.tenant-subscriptions')
                     @elseif($activeTab === 'whatsapp')
-                        @include('livewire.super-admin.partials.tenant-whatsapp')
+                        @include('thunder-pack::livewire.super-admin.partials.tenant-whatsapp')
                     @endif
                 </div>
             </div>
-        </div>
-    </div>
 
     <!-- Phone Form Modal -->
     @if($showPhoneForm)

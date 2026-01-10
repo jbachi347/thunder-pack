@@ -197,7 +197,7 @@
 
                 <!-- Modal panel -->
                 <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <livewire:team.invite :key="'invite-'.now()" @invitation-sent="$set('showInviteModal', false); $refresh;" />
+                    <livewire:thunder-pack::team.invite :key="'invite-'.now()" />
                 </div>
             </div>
         </div>

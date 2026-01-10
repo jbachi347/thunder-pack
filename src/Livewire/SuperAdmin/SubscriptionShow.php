@@ -153,6 +153,6 @@ class SubscriptionShow extends Component
 
         return view('thunder-pack::livewire.super-admin.subscription-show', [
             'paymentEvents' => $paymentEvents,
-        ])->layout('layouts.app-sidebar-sa');
+        ])->layout('thunder-pack::layouts.app-sidebar-sa');
     }
 }

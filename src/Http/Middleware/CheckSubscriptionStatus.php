@@ -39,20 +39,20 @@ class CheckSubscriptionStatus
 
         // Si no tiene suscripción, redirigir
         if (!$subscription) {
-            return redirect()->route('subscription.expired')
+            return redirect()->route('thunder-pack.subscription.expired')
                 ->with('error', 'No tienes una suscripción activa. Contacta con soporte.');
         }
 
         // Si la suscripción está vencida o cancelada, redirigir
         if (in_array($subscription->status, ['past_due', 'canceled'])) {
-            return redirect()->route('subscription.expired')
+            return redirect()->route('thunder-pack.subscription.expired')
                 ->with('error', 'Tu suscripción ha vencido. Por favor renueva tu plan para continuar.');
         }
 
         // Verificar también si ends_at ya pasó (aunque el status sea 'active')
         // Esto cubre el caso donde el job aún no ha ejecutado
         if ($subscription->ends_at && $subscription->ends_at->isPast()) {
-            return redirect()->route('subscription.expired')
+            return redirect()->route('thunder-pack.subscription.expired')
                 ->with('error', 'Tu suscripción ha vencido. Por favor renueva tu plan para continuar.');
         }
 

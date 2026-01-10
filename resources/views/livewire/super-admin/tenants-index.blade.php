@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tenants</h2>
-            <a href="{{ route('sa.dashboard') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver al Dashboard</a>
+            <a href="{{ route('thunder-pack.sa.dashboard') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver al Dashboard</a>
         </div>
     </x-slot>
 
@@ -31,7 +31,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="divide-y divide-gray-100 dark:divide-gray-700">
                     @forelse($tenants as $tenant)
-                        <a href="{{ route('sa.tenants.show', $tenant) }}" class="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                        <a href="{{ route('thunder-pack.sa.tenants.show', $tenant) }}" class="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                             <div class="flex justify-between items-start">
                                 <div class="flex-1">
                                     <div class="font-medium text-gray-900 dark:text-gray-100 text-sm">{{ $tenant->name }}</div>

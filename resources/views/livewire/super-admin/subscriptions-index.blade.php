@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Suscripciones</h2>
-            <a href="{{ route('sa.dashboard') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver al Dashboard</a>
+            <a href="{{ route('thunder-pack.sa.dashboard') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver al Dashboard</a>
         </div>
     </x-slot>
 
@@ -64,7 +64,7 @@
                         <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                             <div class="flex justify-between items-start">
                                 <div class="flex-1">
-                                    <a href="{{ route('sa.subscriptions.show', $subscription) }}" class="font-medium text-gray-900 dark:text-gray-100 text-sm hover:text-indigo-600 dark:hover:text-indigo-400">
+                                    <a href="{{ route('thunder-pack.sa.subscriptions.show', $subscription) }}" class="font-medium text-gray-900 dark:text-gray-100 text-sm hover:text-indigo-600 dark:hover:text-indigo-400">
                                         {{ $subscription->tenant->name }}
                                     </a>
                                     <div class="flex items-center gap-3 mt-1 text-xs text-gray-500 dark:text-gray-400">

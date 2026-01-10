@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="mb-6">
         <div class="flex items-center gap-4 mb-2">
-            <a href="{{ route('sa.tenants.show', $tenant) }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+            <a href="{{ route('thunder-pack.sa.tenants.show', $tenant) }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>

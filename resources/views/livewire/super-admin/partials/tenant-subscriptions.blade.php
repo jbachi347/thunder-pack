@@ -5,7 +5,7 @@
 
     <div class="divide-y divide-gray-100 dark:divide-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
         @forelse($tenant->subscriptions as $subscription)
-            <a href="{{ route('sa.subscriptions.show', $subscription) }}" 
+            <a href="{{ route('thunder-pack.sa.subscriptions.show', $subscription) }}" 
                class="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                 <div class="flex justify-between items-start">
                     <div class="flex-1">
