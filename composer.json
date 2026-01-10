@@ -1,0 +1,54 @@
+{
+    "name": "bachisoft/thunder-pack",
+    "description": "Laravel multi-tenant SaaS package with subscription management, flexible limits system, and WhatsApp integration",
+    "keywords": [
+        "laravel",
+        "multi-tenant",
+        "saas",
+        "subscription",
+        "livewire",
+        "whatsapp",
+        "feature-gates"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bachisoft",
+            "email": "info@bachisoft.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^12.0",
+        "livewire/livewire": "^3.6.4"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ThunderPack\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ThunderPack\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ThunderPack\\ThunderPackServiceProvider"
+            ],
+            "aliases": {
+                "FeatureGate": "ThunderPack\\Facades\\FeatureGate",
+                "PlanLimitService": "ThunderPack\\Facades\\PlanLimitService",
+                "SubscriptionService": "ThunderPack\\Facades\\SubscriptionService"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
