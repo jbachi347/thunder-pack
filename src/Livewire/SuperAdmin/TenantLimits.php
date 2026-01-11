@@ -104,7 +104,7 @@ class TenantLimits extends Component
 
         // Add limits from plan features if exist
         if ($plan && $plan->features) {
-            foreach (['max_clients', 'max_projects', 'api_calls_per_month', 'api_calls_per_day'] as $key) {
+            foreach (['max_clients', 'max_projects', 'max_installations', 'api_calls_per_month', 'api_calls_per_day'] as $key) {
                 if (isset($plan->features[$key])) {
                     $limits[$key] = [
                         'name' => ucwords(str_replace(['_', 'max ', 'per '], [' ', '', '/ '], $key)),

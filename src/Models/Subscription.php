@@ -3,12 +3,14 @@
 namespace ThunderPack\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Subscription extends Model
 {
     protected $fillable = [
         'tenant_id',
         'plan_id',
+        'uuid',
         'status',
         'provider',
         'provider_customer_id',
@@ -23,6 +25,20 @@ class Subscription extends Model
         'trial_ends_at' => 'datetime',
         'ends_at' => 'datetime',
     ];
+
+    /**
+     * Boot method to auto-generate UUID.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($subscription) {
+            if (empty($subscription->uuid)) {
+                $subscription->uuid = (string) Str::uuid();
+            }
+        });
+    }
 
     // Relationships
     public function tenant()
