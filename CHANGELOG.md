@@ -5,6 +5,16 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2026-01-12
+
+### Added
+- Subscription status badge now displayed in tenant selector for better visibility
+- Extensible SuperAdmin sidebar navigation via `partials.superadmin-nav` view (allows apps to add custom menu items)
+
+### Improved
+- Tenant selector UI now shows subscription status inline with tenant name
+- SuperAdmin layout more flexible for app-specific customizations
+
 ## [1.2.1] - 2026-01-12
 
 ### Fixed
@@ -101,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation summary
 - Full feature documentation
 
+[1.2.2]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.2.2
 [1.2.1]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.2.1
 [1.2.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.2.0
 [1.1.2]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.2

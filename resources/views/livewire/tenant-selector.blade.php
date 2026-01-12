@@ -87,7 +87,10 @@
                     >
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <div class="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-indigo-700 dark:group-hover:text-indigo-400">{{ $tenant->name }}</div>
+                                <div class="flex items-center gap-2">
+                                    <div class="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-indigo-700 dark:group-hover:text-indigo-400">{{ $tenant->name }}</div>
+                                    @livewire('thunder-pack::subscription-status-badge', ['tenant' => $tenant], key('badge-'.$tenant->id))
+                                </div>
                                 <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ $tenant->slug }}</div>
                             </div>
                             <div class="flex items-center">
