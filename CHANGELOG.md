@@ -5,6 +5,13 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-01-12
+
+### Fixed
+- Auto-generate unique slug for tenants when creating via `CreateTenantWithPlan` component
+- Added random 4-character suffix to slugs to prevent collisions with duplicate company names
+- Slug generation now falls back to timestamp if random suffixes are exhausted
+
 ## [1.1.0] - 2026-01-12
 
 ### Added
@@ -66,5 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation summary
 - Full feature documentation
 
+[1.1.1]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.1
 [1.1.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.0
 [1.0.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.0.0

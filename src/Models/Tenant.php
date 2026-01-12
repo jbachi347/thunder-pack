@@ -4,6 +4,7 @@ namespace ThunderPack\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Tenant extends Model
 {
@@ -25,6 +26,44 @@ class Tenant extends Model
         'storage_used_bytes' => 'integer',
         'data' => 'array',
     ];
+
+    /**
+     * Boot method to auto-generate slug
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($tenant) {
+            if (empty($tenant->slug)) {
+                $tenant->slug = static::generateUniqueSlug($tenant->name);
+            }
+        });
+    }
+
+    /**
+     * Generate a unique slug from name with random suffix
+     */
+    protected static function generateUniqueSlug(string $name): string
+    {
+        $baseSlug = Str::slug($name);
+        $slug = $baseSlug;
+        $suffix = 1;
+
+        // Check if slug exists and add random suffix if needed
+        while (static::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . Str::lower(Str::random(4));
+            $suffix++;
+            
+            // Fallback to incremental suffix after 10 attempts
+            if ($suffix > 10) {
+                $slug = $baseSlug . '-' . time();
+                break;
+            }
+        }
+
+        return $slug;
+    }
 
     // Relationships
     public function users()
