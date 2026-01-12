@@ -5,6 +5,17 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-01-12
+
+### Fixed
+- Register PlansIndex Livewire component in ServiceProvider (fixes ComponentNotFoundException)
+
+### Added
+- GB input field with automatic byte conversion for storage quota
+- Quick buttons for common storage sizes (1GB, 5GB, 10GB, 50GB, 100GB)
+- Real-time display of calculated bytes value
+- Better UX: no need to manually calculate bytes from GB
+
 ## [1.3.0] - 2026-01-12
 
 ### Added
