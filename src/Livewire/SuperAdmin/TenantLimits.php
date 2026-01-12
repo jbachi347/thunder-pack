@@ -4,6 +4,7 @@ namespace ThunderPack\Livewire\SuperAdmin;
 
 use ThunderPack\Models\Tenant;
 use ThunderPack\Models\TenantLimitOverride;
+use ThunderPack\Models\AvailableLimit;
 use ThunderPack\Services\PlanLimitService;
 use Livewire\Component;
 
@@ -86,38 +87,41 @@ class TenantLimits extends Component
         $subscription = $this->tenant->activeSubscription;
         $plan = $subscription?->plan;
 
-        // Get all possible limits
-        $limits = [
-            'staff_limit' => [
-                'name' => 'Límite de Personal',
-                'plan_value' => $plan?->staff_limit ?? 1,
-                'current_usage' => $this->tenant->getCurrentStaffCount(),
-                'override' => $this->tenant->limitOverrides()->where('limit_key', 'staff_limit')->first(),
-            ],
-            'max_whatsapp_phones' => [
-                'name' => 'Teléfonos WhatsApp',
-                'plan_value' => $plan?->getLimit('max_whatsapp_phones') ?? 0,
-                'current_usage' => $this->tenant->whatsappPhones()->count(),
-                'override' => $this->tenant->limitOverrides()->where('limit_key', 'max_whatsapp_phones')->first(),
-            ],
-        ];
-
-        // Add limits from plan features if exist
-        if ($plan && $plan->features) {
-            foreach (['max_clients', 'max_projects', 'max_installations', 'api_calls_per_month', 'api_calls_per_day'] as $key) {
-                if (isset($plan->features[$key])) {
-                    $limits[$key] = [
-                        'name' => ucwords(str_replace(['_', 'max ', 'per '], [' ', '', '/ '], $key)),
-                        'plan_value' => $plan->features[$key],
-                        'current_usage' => PlanLimitService::getCurrentUsage($this->tenant, $key),
-                        'override' => $this->tenant->limitOverrides()->where('limit_key', $key)->first(),
-                    ];
-                }
+        // Get plan-specific limits only
+        $limits = [];
+        $availableLimitsForDropdown = AvailableLimit::active()->ordered()->get();
+        
+        if ($plan) {
+            // Get limits defined in the plan
+            $planFeatures = $plan->features ?? [];
+            
+            // Add legacy plan attributes to features for backward compatibility
+            if ($plan->staff_limit) {
+                $planFeatures['staff_limit'] = $plan->staff_limit;
+            }
+            if ($plan->storage_quota_bytes) {
+                $planFeatures['storage_quota_bytes'] = $plan->storage_quota_bytes;
+            }
+            
+            // Only show limits that the plan actually defines
+            foreach ($planFeatures as $key => $planValue) {
+                $availableLimit = AvailableLimit::where('key', $key)->first();
+                
+                $limits[$key] = [
+                    'name' => $availableLimit ? $availableLimit->display_name : ucwords(str_replace('_', ' ', $key)),
+                    'category' => $availableLimit?->category ?? 'general',
+                    'description' => $availableLimit?->description ?? '',
+                    'unit' => $availableLimit?->unit ?? '',
+                    'plan_value' => $planValue,
+                    'current_usage' => PlanLimitService::getCurrentUsage($this->tenant, $key),
+                    'override' => $this->tenant->limitOverrides()->where('limit_key', $key)->first(),
+                ];
             }
         }
 
         return view('thunder-pack::livewire.super-admin.tenant-limits', [
             'limits' => $limits,
+            'availableLimits' => $availableLimitsForDropdown,
             'plan' => $plan,
             'subscription' => $subscription,
         ])->layout('thunder-pack::layouts.app-sidebar-sa');

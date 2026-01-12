@@ -5,6 +5,39 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-01-12
+
+### Fixed
+- TypeError in tenant-limits view when calculating usage percentages with non-numeric values
+- BadMethodCallException in plans view when Collection is treated as Model (Livewire serialization issue)
+- Improved type checking for current_usage values to prevent division errors
+
+## [1.4.0] - 2026-01-12
+
+### Added
+- Database-driven tenant limits system with `AvailableLimit` model
+- Dynamic limit dropdown populated from database instead of hardcoded options
+- Comprehensive default limits covering general, storage, communication, API, reporting, business, and technology categories
+- Available limits seeder with 18 standard SaaS limits including `max_installations`
+- Categorized limit options with descriptive tooltips
+- Integration with installation command for easy setup
+- **Plan limits management interface** - Configure which limits each plan includes with specific values
+- **Plan features editor** - Visual interface to select and configure limits per plan
+- Organized limits by categories with individual value inputs
+
+### Changed
+- TenantLimits component now shows only limits defined in the plan instead of all available limits
+- PlansIndex now includes comprehensive limit management interface
+- Limits are organized by categories (general, storage, communication, etc.)
+- Better limit management with descriptions and units
+- Install command now includes available limits seeding
+
+### Fixed
+- `max_installations` limit now appears in tenant management dropdown
+- Changed `default_value` field to `bigInteger` to support large values like storage quotas in bytes
+- **Core UX issue**: TenantLimits now correctly shows only plan-specific limits instead of all system limits
+- **Plan configuration**: Now possible to define which limits each plan includes
+
 ## [1.3.1] - 2026-01-12
 
 ### Fixed

@@ -69,8 +69,16 @@
                             @forelse($limits as $key => $limit)
                                 @php
                                     $effectiveLimit = $limit['override'] ? $limit['override']->getParsedValue() : $limit['plan_value'];
-                                    $percentage = $effectiveLimit > 0 ? ($limit['current_usage'] / $effectiveLimit * 100) : 0;
+                                    $currentUsage = is_numeric($limit['current_usage']) ? $limit['current_usage'] : 0;
+                                    $effectiveLimit = is_numeric($effectiveLimit) ? $effectiveLimit : 0;
+                                    $percentage = $effectiveLimit > 0 ? ($currentUsage / $effectiveLimit * 100) : 0;
                                     $isUnlimited = $limit['override'] && $limit['override']->getParsedValue() === null;
+                                    
+                                    // Handle plan_value that might be an array
+                                    $planValue = $limit['plan_value'] ?? '-';
+                                    if (is_array($planValue)) {
+                                        $planValue = json_encode($planValue);
+                                    }
                                 @endphp
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -82,10 +90,10 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                        {{ $limit['plan_value'] ?? '-' }}
+                                        {{ $planValue }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                        {{ $limit['current_usage'] }}
+                                        {{ $currentUsage }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($limit['override'])
@@ -172,12 +180,24 @@
                             required
                         >
                             <option value="">Seleccionar...</option>
-                            <option value="staff_limit">Límite de Personal</option>
-                            <option value="max_whatsapp_phones">Teléfonos WhatsApp</option>
-                            <option value="max_clients">Máximo de Clientes</option>
-                            <option value="max_projects">Máximo de Proyectos</option>
-                            <option value="api_calls_per_month">Llamadas API (Mensual)</option>
-                            <option value="api_calls_per_day">Llamadas API (Diario)</option>
+                            @php
+                                $currentCategory = null;
+                            @endphp
+                            @foreach($availableLimits as $limit)
+                                @if($currentCategory !== $limit->category)
+                                    @if($currentCategory !== null)
+                                        </optgroup>
+                                    @endif
+                                    <optgroup label="{{ ucfirst($limit->category) }}">
+                                    @php $currentCategory = $limit->category; @endphp
+                                @endif
+                                <option value="{{ $limit->key }}" title="{{ $limit->description }}">
+                                    {{ $limit->display_name }}
+                                </option>
+                            @endforeach
+                            @if($currentCategory !== null)
+                                </optgroup>
+                            @endif
                         </select>
                         @error('limitKey')
                             <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>

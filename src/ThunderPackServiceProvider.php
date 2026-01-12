@@ -158,6 +158,7 @@ class ThunderPackServiceProvider extends ServiceProvider
         Livewire::component('thunder-pack::super-admin.subscriptions-index', \ThunderPack\Livewire\SuperAdmin\SubscriptionsIndex::class);
         Livewire::component('thunder-pack::super-admin.subscription-show', \ThunderPack\Livewire\SuperAdmin\SubscriptionShow::class);
         Livewire::component('thunder-pack::super-admin.plans-index', \ThunderPack\Livewire\SuperAdmin\PlansIndex::class);
+        Livewire::component('thunder-pack::super-admin.plan-limits', \ThunderPack\Livewire\SuperAdmin\PlanLimits::class);
 
         // Team components
         Livewire::component('thunder-pack::team.index', \ThunderPack\Livewire\Team\Index::class);

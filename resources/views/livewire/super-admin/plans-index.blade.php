@@ -87,6 +87,10 @@
                                     class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">
                                     Editar
                                 </button>
+                                <a href="{{ route('thunder-pack.sa.plans.limits', $plan->id) }}"
+                                    class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3">
+                                    Límites
+                                </a>
                                 @if($plan->subscriptions_count == 0)
                                     <button wire:click="delete({{ $plan->id }})"
                                         onclick="return confirm('¿Estás seguro de eliminar este plan?')"

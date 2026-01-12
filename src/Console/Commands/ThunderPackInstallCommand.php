@@ -43,10 +43,14 @@ class ThunderPackInstallCommand extends Command
             }
         }
 
-        // Step 5: Seed plans
+        // Step 5: Seed plans and available limits
         if (!$this->option('skip-seed')) {
             if ($this->confirm('Seed default subscription plans?', true)) {
                 $this->seedPlans();
+            }
+            
+            if ($this->confirm('Seed available limits for tenant management?', true)) {
+                $this->seedAvailableLimits();
             }
         }
 
@@ -145,6 +149,24 @@ class ThunderPackInstallCommand extends Command
         } catch (\Exception $e) {
             $this->error('✗ Failed to seed plans: ' . $e->getMessage());
             $this->comment('  You can run this manually later with: php artisan db:seed --class=ThunderPack\\Database\\Seeders\\PlanSeeder');
+        }
+        
+        $this->newLine();
+    }
+
+    protected function seedAvailableLimits(): void
+    {
+        $this->comment('📊 Seeding available limits...');
+        
+        try {
+            Artisan::call('db:seed', [
+                '--class' => 'ThunderPack\\Database\\Seeders\\AvailableLimitsSeeder'
+            ], $this->output);
+            
+            $this->info('✓ Available limits created (staff, storage, API calls, etc.)');
+        } catch (\Exception $e) {
+            $this->error('✗ Failed to seed available limits: ' . $e->getMessage());
+            $this->comment('  You can run this manually later with: php artisan db:seed --class=ThunderPack\\Database\\Seeders\\AvailableLimitsSeeder');
         }
         
         $this->newLine();

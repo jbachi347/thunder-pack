@@ -68,5 +68,7 @@ if (config('thunder-pack.features.super_admin_panel', true)) {
             // Plans Management
             Route::get('/plans', \ThunderPack\Livewire\SuperAdmin\PlansIndex::class)
                 ->name('plans.index');
+            Route::get('/plans/{plan}/limits', \ThunderPack\Livewire\SuperAdmin\PlanLimits::class)
+                ->name('plans.limits');
         });
 }

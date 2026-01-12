@@ -3,6 +3,7 @@
 namespace ThunderPack\Livewire\SuperAdmin;
 
 use ThunderPack\Models\Plan;
+use ThunderPack\Models\AvailableLimit;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
