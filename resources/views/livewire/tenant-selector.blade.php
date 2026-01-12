@@ -1,4 +1,7 @@
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+    <!-- Modal Component -->
+    @livewire('thunder-pack::create-tenant-with-plan')
+
     <div class="p-6">
         <!-- Messages -->
         @if (session()->has('message'))
@@ -71,7 +74,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                 </svg>
                 <p class="text-gray-600 dark:text-gray-300 text-sm font-medium">No perteneces a ninguna organización</p>
-                <p class="text-gray-500 dark:text-gray-500 text-xs mt-1">Contacta con un administrador para que te invite</p>
+                <p class="text-gray-500 dark:text-gray-500 text-xs mt-1">Crea tu primera organización para comenzar</p>
             </div>
         @else
             <div class="space-y-2">
@@ -103,6 +106,19 @@
                 @endforeach
             </div>
         @endif
+
+        <!-- Botón Crear Nuevo Tenant -->
+        <div class="mt-4">
+            <button 
+                wire:click="$dispatch('open-create-tenant-modal')"
+                class="w-full inline-flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+            >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Crear Nueva Organización
+            </button>
+        </div>
 
         <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
             <button 

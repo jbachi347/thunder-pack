@@ -11,6 +11,8 @@ class TenantSelector extends Component
     public $tenants;
     public $pendingInvitations;
 
+    protected $listeners = ['tenant-created' => 'loadData'];
+
     public function mount()
     {
         $this->loadData();

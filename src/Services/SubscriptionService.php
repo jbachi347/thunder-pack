@@ -23,7 +23,7 @@ class SubscriptionService
     /**
      * Activar suscripción manualmente
      */
-    public function activateManual(Tenant $tenant, Plan $plan, int $days = 30): Subscription
+    public function activateManual(Tenant $tenant, Plan $plan, int $days = 30, bool $isTrial = false): Subscription
     {
         // Buscar suscripción existente o crear nueva
         $subscription = $tenant->subscriptions()->latest()->first();
@@ -34,8 +34,8 @@ class SubscriptionService
                 'plan_id' => $plan->id,
                 'status' => 'active',
                 'provider' => 'manual',
-                'trial_ends_at' => null,
-                'ends_at' => now()->addDays($days),
+                'trial_ends_at' => $isTrial ? now()->addDays($days) : null,
+                'ends_at' => $isTrial ? null : now()->addDays($days),
             ]);
         } else {
             // Crear nueva
@@ -43,8 +43,8 @@ class SubscriptionService
                 'plan_id' => $plan->id,
                 'status' => 'active',
                 'provider' => 'manual',
-                'trial_ends_at' => null,
-                'ends_at' => now()->addDays($days),
+                'trial_ends_at' => $isTrial ? now()->addDays($days) : null,
+                'ends_at' => $isTrial ? null : now()->addDays($days),
             ]);
         }
 

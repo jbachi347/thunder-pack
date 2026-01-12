@@ -5,6 +5,22 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-01-12
+
+### Added
+- **Self-Service Tenant Creation**: New `CreateTenantWithPlan` Livewire component for user-initiated tenant creation
+- **Automatic Trial Activation**: 7-day trial periods automatically created when new tenants are registered
+- **Plan Selection UI**: Users can now choose plans during tenant creation with pricing and limits displayed
+- **"Create New Organization" Button**: Added to TenantSelector component for easy access to tenant creation
+
+### Changed
+- Updated `SubscriptionService::activateManual()` to support trial mode with new `$isTrial` parameter
+- Enhanced TenantSelector to refresh automatically when new tenants are created via event listeners
+- Improved empty state messaging in TenantSelector to encourage tenant creation
+
+### Security
+- Replaced exposed APP_KEY in phpunit.xml with dummy key for security
+
 ## [1.0.0] - 2026-01-12
 
 ### Added
@@ -50,4 +66,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation summary
 - Full feature documentation
 
+[1.1.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.0
 [1.0.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.0.0

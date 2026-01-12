@@ -141,6 +141,7 @@ class ThunderPackServiceProvider extends ServiceProvider
     {
         // Main components
         Livewire::component('thunder-pack::tenant-selector', \ThunderPack\Livewire\TenantSelector::class);
+        Livewire::component('thunder-pack::create-tenant-with-plan', \ThunderPack\Livewire\CreateTenantWithPlan::class);
         Livewire::component('thunder-pack::subscription-expired', \ThunderPack\Livewire\SubscriptionExpired::class);
 
         // Super Admin components
