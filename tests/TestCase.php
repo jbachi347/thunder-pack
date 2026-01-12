@@ -2,6 +2,7 @@
 
 namespace ThunderPack\Tests;
 
+use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use ThunderPack\ThunderPackServiceProvider;
 
@@ -10,6 +11,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
+            LivewireServiceProvider::class,
             ThunderPackServiceProvider::class,
         ];
     }
@@ -23,5 +25,8 @@ class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+        
+        // Thunder-Pack configuration
+        $app['config']->set('thunder-pack.models.tenant', \ThunderPack\Models\Tenant::class);
     }
 }
