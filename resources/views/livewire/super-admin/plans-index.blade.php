@@ -189,15 +189,39 @@
                                     <!-- Storage Quota -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                            Almacenamiento (bytes) <span class="text-red-500">*</span>
+                                            Almacenamiento <span class="text-red-500">*</span>
                                         </label>
-                                        <input type="number" 
+                                        
+                                        <!-- GB Input -->
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <input type="number" 
+                                                id="storage_gb_input"
+                                                placeholder="Ej: 5"
+                                                min="0"
+                                                step="0.1"
+                                                class="flex-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2"
+                                                oninput="updateStorageBytes(this.value)">
+                                            <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">GB</span>
+                                        </div>
+
+                                        <!-- Quick Buttons -->
+                                        <div class="flex gap-2 mb-2">
+                                            <button type="button" onclick="setStorage(1)" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600">1 GB</button>
+                                            <button type="button" onclick="setStorage(5)" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600">5 GB</button>
+                                            <button type="button" onclick="setStorage(10)" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600">10 GB</button>
+                                            <button type="button" onclick="setStorage(50)" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600">50 GB</button>
+                                            <button type="button" onclick="setStorage(100)" class="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600">100 GB</button>
+                                        </div>
+
+                                        <!-- Hidden input for Livewire -->
+                                        <input type="hidden" 
                                             wire:model="storage_quota_bytes"
-                                            min="0"
-                                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2">
+                                            id="storage_bytes_hidden">
+                                        
                                         @error('storage_quota_bytes') <span class="text-xs text-red-600 dark:text-red-400 mt-1">{{ $message }}</span> @enderror
+                                        
                                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                            5GB = 5368709120 bytes
+                                            = <span id="bytes_display">{{ number_format($storage_quota_bytes) }}</span> bytes
                                         </p>
                                     </div>
                                 </div>
@@ -223,3 +247,75 @@
 
     </div>
 </div>
+
+<script>
+// Convert GB to bytes
+function gbToBytes(gb) {
+    return Math.round(gb * 1024 * 1024 * 1024);
+}
+
+// Convert bytes to GB
+function bytesToGb(bytes) {
+    return (bytes / 1024 / 1024 / 1024).toFixed(2);
+}
+
+// Set storage from buttons
+function setStorage(gb) {
+    const bytes = gbToBytes(gb);
+    document.getElementById('storage_gb_input').value = gb;
+    updateStorageBytesValue(bytes);
+}
+
+// Update storage when user types GB
+function updateStorageBytes(gb) {
+    if (gb && gb > 0) {
+        const bytes = gbToBytes(gb);
+        updateStorageBytesValue(bytes);
+    }
+}
+
+// Update the hidden input and display
+function updateStorageBytesValue(bytes) {
+    const hiddenInput = document.getElementById('storage_bytes_hidden');
+    const bytesDisplay = document.getElementById('bytes_display');
+    
+    if (hiddenInput && bytesDisplay) {
+        hiddenInput.value = bytes;
+        hiddenInput.dispatchEvent(new Event('input'));
+        bytesDisplay.textContent = bytes.toLocaleString();
+        
+        // Trigger Livewire update
+        @this.set('storage_quota_bytes', bytes);
+    }
+}
+
+// Initialize GB input when modal opens
+document.addEventListener('livewire:initialized', () => {
+    Livewire.on('plan-modal-opened', (data) => {
+        const storageBytes = data.storage_quota_bytes || 0;
+        const storageGb = bytesToGb(storageBytes);
+        document.getElementById('storage_gb_input').value = storageGb;
+    });
+});
+
+// Update GB input when editing
+window.addEventListener('DOMContentLoaded', (event) => {
+    const observer = new MutationObserver(() => {
+        const hiddenInput = document.getElementById('storage_bytes_hidden');
+        const gbInput = document.getElementById('storage_gb_input');
+        
+        if (hiddenInput && gbInput && hiddenInput.value) {
+            const gb = bytesToGb(parseInt(hiddenInput.value));
+            if (gbInput.value !== gb) {
+                gbInput.value = gb;
+            }
+        }
+    });
+    
+    // Start observing modal
+    const modalContainer = document.querySelector('[x-data]');
+    if (modalContainer) {
+        observer.observe(modalContainer, { childList: true, subtree: true });
+    }
+});
+</script>

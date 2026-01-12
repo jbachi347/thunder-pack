@@ -47,6 +47,7 @@ class PlansIndex extends Component
     {
         $this->resetForm();
         $this->showModal = true;
+        $this->dispatch('plan-modal-opened', storage_quota_bytes: $this->storage_quota_bytes);
     }
 
     public function edit($id)
@@ -62,6 +63,7 @@ class PlansIndex extends Component
         $this->features = $plan->features ?? [];
         
         $this->showModal = true;
+        $this->dispatch('plan-modal-opened', storage_quota_bytes: $this->storage_quota_bytes);
     }
 
     public function save()
