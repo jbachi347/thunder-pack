@@ -64,5 +64,9 @@ if (config('thunder-pack.features.super_admin_panel', true)) {
             
             Route::get('/subscriptions/{subscription}', \ThunderPack\Livewire\SuperAdmin\SubscriptionShow::class)
                 ->name('subscriptions.show');
+            
+            // Plans Management
+            Route::get('/plans', \ThunderPack\Livewire\SuperAdmin\PlansIndex::class)
+                ->name('plans.index');
         });
 }

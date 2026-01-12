@@ -5,6 +5,23 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-01-12
+
+### Added
+- **Plans CRUD**: Full management interface for subscription plans in SuperAdmin panel
+  - Create, edit, and delete plans
+  - Set plan pricing (monthly_price_cents) and currency
+  - Configure staff limits and storage quotas
+  - View subscription count per plan
+  - Prevent deletion of plans with active subscriptions
+- New route: `/sa/plans` (SuperAdmin only)
+- New Livewire component: `ThunderPack\Livewire\SuperAdmin\PlansIndex`
+- Added "Planes" link to SuperAdmin sidebar navigation
+
+### Changed
+- Enhanced Plan model with subscription count relationship
+- Updated SuperAdmin layout with Plans navigation item
+
 ## [1.2.3] - 2026-01-12
 
 ### Fixed
