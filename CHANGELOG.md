@@ -5,6 +5,18 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2026-01-12
+
+### Added
+- Manual payment recording UI in subscription detail view (`/sa/subscriptions/{id}`)
+- Manual next billing date setter with date picker input
+- Visual form for registering manual payments with amount, currency, and notes fields
+
+### Fixed
+- Trial subscriptions now properly set `next_billing_date` when activated
+- Subscription detail view now displays `trial_ends_at`, `ends_at`, and `next_billing_date` fields
+- Improved date visibility for trial periods in SuperAdmin panel
+
 ## [1.4.1] - 2026-01-12
 
 ### Fixed

@@ -36,6 +36,7 @@ class SubscriptionService
                 'provider' => 'manual',
                 'trial_ends_at' => $isTrial ? now()->addDays($days) : null,
                 'ends_at' => $isTrial ? null : now()->addDays($days),
+                'next_billing_date' => now()->addDays($days), // Siempre establecer próxima facturación
             ]);
         } else {
             // Crear nueva
@@ -45,6 +46,7 @@ class SubscriptionService
                 'provider' => 'manual',
                 'trial_ends_at' => $isTrial ? now()->addDays($days) : null,
                 'ends_at' => $isTrial ? null : now()->addDays($days),
+                'next_billing_date' => now()->addDays($days), // Siempre establecer próxima facturación
             ]);
         }
 

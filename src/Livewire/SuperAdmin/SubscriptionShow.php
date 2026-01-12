@@ -21,6 +21,9 @@ class SubscriptionShow extends Component
     public $paymentCurrency = 'USD';
     public $paymentNotes = '';
 
+    // Para establecer fecha manual
+    public $manualNextBillingDate;
+
     public function mount(Subscription $subscription)
     {
         $this->subscription = $subscription->load(['tenant', 'plan']);
@@ -140,6 +143,32 @@ class SubscriptionShow extends Component
             
         } catch (\Exception $e) {
             session()->flash('error', 'Error al registrar pago: ' . $e->getMessage());
+        }
+    }
+
+    public function setNextBillingDate()
+    {
+        $this->validate([
+            'manualNextBillingDate' => 'required|date|after:today',
+        ], [
+            'manualNextBillingDate.required' => 'La fecha es obligatoria',
+            'manualNextBillingDate.date' => 'La fecha no es válida',
+            'manualNextBillingDate.after' => 'La fecha debe ser posterior a hoy',
+        ]);
+
+        try {
+            $this->subscription->update([
+                'next_billing_date' => $this->manualNextBillingDate,
+                'ends_at' => $this->manualNextBillingDate, // También actualizar ends_at para consistencia
+            ]);
+
+            session()->flash('message', 'Fecha de renovación establecida correctamente.');
+            
+            $this->subscription = $this->subscription->fresh(['tenant', 'plan']);
+            $this->manualNextBillingDate = null;
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al establecer fecha: ' . $e->getMessage());
         }
     }
 

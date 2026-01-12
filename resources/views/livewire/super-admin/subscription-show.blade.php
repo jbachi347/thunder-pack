@@ -46,10 +46,22 @@
                         <dt class="text-gray-500 dark:text-gray-400">Precio</dt>
                         <dd class="text-gray-900 dark:text-gray-100 font-medium">${{ number_format($subscription->plan->monthly_price_cents / 100, 2) }}/mes</dd>
                     </div>
+                    @if($subscription->trial_ends_at)
+                        <div>
+                            <dt class="text-gray-500 dark:text-gray-400">Fin de Prueba</dt>
+                            <dd class="text-gray-900 dark:text-gray-100 font-medium">{{ $subscription->trial_ends_at->format('d/m/Y H:i') }}</dd>
+                        </div>
+                    @endif
                     @if($subscription->ends_at)
                         <div>
                             <dt class="text-gray-500 dark:text-gray-400">Fecha de Vencimiento</dt>
                             <dd class="text-gray-900 dark:text-gray-100 font-medium">{{ $subscription->ends_at->format('d/m/Y H:i') }}</dd>
+                        </div>
+                    @endif
+                    @if($subscription->next_billing_date)
+                        <div>
+                            <dt class="text-gray-500 dark:text-gray-400">Próxima Facturación</dt>
+                            <dd class="text-gray-900 dark:text-gray-100 font-medium">{{ $subscription->next_billing_date->format('d/m/Y H:i') }}</dd>
                         </div>
                     @endif
                     <div>
@@ -77,6 +89,76 @@
                     </button>
                     <button wire:click="cancel" class="inline-flex items-center px-3 py-1.5 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Establecer Fecha Manual -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Establecer Fecha de Renovación Manual</h3>
+                <div class="flex items-end gap-3">
+                    <div class="flex-1">
+                        <label for="manualNextBillingDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Próxima Renovación
+                        </label>
+                        <input type="datetime-local" 
+                            id="manualNextBillingDate"
+                            wire:model="manualNextBillingDate" 
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2">
+                        @error('manualNextBillingDate') 
+                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span> 
+                        @enderror
+                    </div>
+                    <button wire:click="setNextBillingDate" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        Establecer Fecha
+                    </button>
+                </div>
+            </div>
+
+            <!-- Registrar Pago Manual -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-4">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Registrar Pago Manual</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label for="paymentAmount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Monto
+                        </label>
+                        <input type="number" 
+                            step="0.01"
+                            id="paymentAmount"
+                            wire:model="paymentAmount" 
+                            placeholder="0.00"
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2">
+                        @error('paymentAmount') 
+                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span> 
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="paymentCurrency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Moneda
+                        </label>
+                        <select id="paymentCurrency"
+                            wire:model="paymentCurrency" 
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="DOP">DOP</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="paymentNotes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Notas (opcional)
+                        </label>
+                        <input type="text" 
+                            id="paymentNotes"
+                            wire:model="paymentNotes" 
+                            placeholder="Transferencia bancaria..."
+                            class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2">
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button wire:click="recordPayment" class="inline-flex items-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700 focus:bg-green-700 active:bg-green-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        Registrar Pago
                     </button>
                 </div>
             </div>
