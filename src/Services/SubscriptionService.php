@@ -319,10 +319,15 @@ class SubscriptionService
      */
     protected function generateSubscriptionMessage(Tenant $tenant, Subscription $subscription, string $type): string
     {
+        // Determine the end date (either trial_ends_at or ends_at)
+        $endDate = $subscription->trial_ends_at ?? $subscription->ends_at;
+        $dateFormatted = $endDate ? $endDate->format('d/m/Y') : 'No definida';
+        $subscriptionType = $subscription->trial_ends_at ? 'periodo de prueba' : 'suscripción';
+        
         return match ($type) {
-            'subscription_activated' => "✅ *Suscripción activada*\n\n"
-                . "Tu suscripción de *{$subscription->plan->name}* ha sido activada exitosamente.\n\n"
-                . "📅 Válida hasta: {$subscription->ends_at->format('d/m/Y')}\n\n"
+            'subscription_activated' => "✅ *" . ucfirst($subscriptionType) . " activada*\n\n"
+                . "Tu {$subscriptionType} de *{$subscription->plan->name}* ha sido activada exitosamente.\n\n"
+                . "📅 Válida hasta: {$dateFormatted}\n\n"
                 . "¡Gracias por confiar en nosotros!",
             
             default => "Notificación de suscripción: {$type}",

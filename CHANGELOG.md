@@ -5,6 +5,13 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-01-12
+
+### Fixed
+- Fix "Call to a member function format() on null" error in SubscriptionService when creating trials
+- Handle both `trial_ends_at` and `ends_at` in subscription activation messages
+- Improve subscription message to differentiate between trial and regular subscription
+
 ## [1.1.1] - 2026-01-12
 
 ### Fixed
@@ -73,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation summary
 - Full feature documentation
 
+[1.1.2]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.2
 [1.1.1]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.1
 [1.1.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.0
 [1.0.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.0.0
