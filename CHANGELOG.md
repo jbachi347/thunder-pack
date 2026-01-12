@@ -5,6 +5,21 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-01-12
+
+### Added
+- **SubscriptionStatusBadge Component**: New Livewire component to display subscription status
+- Visual badges for: Trial, Active, Suspended, Past Due, Canceled, No Subscription
+- Interactive tooltips showing expiration/renewal dates
+- Color-coded status indicators (green, blue, yellow, orange, red, gray)
+- `@subscriptionStatus` Blade directive for easy integration in layouts
+- Icon indicators for each subscription state
+
+### Features
+- **Reusable Status Display**: Use `@subscriptionStatus` or `@livewire('thunder-pack::subscription-status-badge')` anywhere
+- **Automatic Status Detection**: Detects trial vs regular subscription states
+- **Dark Mode Support**: Full Tailwind dark mode theming for badges
+
 ## [1.1.2] - 2026-01-12
 
 ### Fixed
@@ -80,7 +95,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation summary
 - Full feature documentation
 
+[1.2.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.2.0
 [1.1.2]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.2
 [1.1.1]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.1
 [1.1.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.1.0
+[1.0.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.0.0
+
 [1.0.0]: https://github.com/bachisoft/thunder-pack/releases/tag/v1.0.0

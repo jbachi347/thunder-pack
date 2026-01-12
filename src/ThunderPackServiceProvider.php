@@ -132,6 +132,11 @@ class ThunderPackServiceProvider extends ServiceProvider
             }
             return app(FeatureGate::class)->allowsAny($tenant, $features);
         });
+
+        // Directive to render subscription status badge
+        Blade::directive('subscriptionStatus', function ($expression) {
+            return "<?php echo \Livewire\Livewire::mount('thunder-pack::subscription-status-badge', [{$expression}])->html(); ?>";
+        });
     }
 
     /**
@@ -143,6 +148,7 @@ class ThunderPackServiceProvider extends ServiceProvider
         Livewire::component('thunder-pack::tenant-selector', \ThunderPack\Livewire\TenantSelector::class);
         Livewire::component('thunder-pack::create-tenant-with-plan', \ThunderPack\Livewire\CreateTenantWithPlan::class);
         Livewire::component('thunder-pack::subscription-expired', \ThunderPack\Livewire\SubscriptionExpired::class);
+        Livewire::component('thunder-pack::subscription-status-badge', \ThunderPack\Livewire\SubscriptionStatusBadge::class);
 
         // Super Admin components
         Livewire::component('thunder-pack::super-admin.dashboard', \ThunderPack\Livewire\SuperAdmin\Dashboard::class);
