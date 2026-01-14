@@ -215,6 +215,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handleSubscriptionCreated(array $payload): void
     {
         $data = $payload['data']['attributes'];
+        $subscriptionId = $payload['data']['id'];
         $customData = $data['first_subscription_item']['variant_id'] ?? [];
         
         // Extract custom data
@@ -240,13 +241,13 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
 
         // Create or update subscription
         $subscription = $tenant->subscriptions()->updateOrCreate(
-            ['provider_subscription_id' => $data['id']],
+            ['provider_subscription_id' => $subscriptionId],
             [
                 'plan_id' => $plan->id,
                 'status' => $this->mapLemonStatus($data['status']),
                 'provider' => 'lemon_squeezy',
                 'provider_customer_id' => $data['customer_id'],
-                'provider_subscription_id' => $data['id'],
+                'provider_subscription_id' => $subscriptionId,
                 'billing_cycle' => $billingCycle,
                 'trial_ends_at' => isset($data['trial_ends_at']) ? Carbon::parse($data['trial_ends_at']) : null,
                 'ends_at' => isset($data['renews_at']) ? Carbon::parse($data['renews_at']) : null,
@@ -264,7 +265,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handleSubscriptionUpdated(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             Log::warning('Lemon Squeezy subscription_updated: subscription not found', ['id' => $data['id']]);
@@ -285,7 +287,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handleSubscriptionCancelled(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
@@ -302,7 +305,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handleSubscriptionResumed(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
@@ -319,7 +323,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handleSubscriptionExpired(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
@@ -335,7 +340,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handleSubscriptionPaused(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
@@ -351,7 +357,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handleSubscriptionUnpaused(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
@@ -444,38 +451,40 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     {
         // Record order in payment events for tracking
         $data = $payload['data']['attributes'];
+        $orderId = $payload['data']['id'];
         
         PaymentEvent::create([
             'tenant_id' => $payload['meta']['custom_data']['tenant_id'] ?? null,
             'provider' => 'lemon_squeezy',
             'event_type' => 'order.created',
-            'provider_event_id' => $data['identifier'] ?? $data['id'],
+            'provider_event_id' => $data['identifier'] ?? $orderId,
             'amount_cents' => isset($data['total']) ? (int) ($data['total'] * 100) : null,
             'currency' => $data['currency'] ?? 'USD',
             'status' => $data['status'] === 'paid' ? 'success' : 'pending',
             'payload' => $payload,
         ]);
 
-        Log::info('Lemon Squeezy order created', ['order_id' => $data['id']]);
+        Log::info('Lemon Squeezy order created', ['order_id' => $orderId]);
     }
 
     private function handleOrderRefunded(array $payload): void
     {
         $data = $payload['data']['attributes'];
+        $orderId = $payload['data']['id'];
         
         // Record refund in payment events
         PaymentEvent::create([
             'tenant_id' => $payload['meta']['custom_data']['tenant_id'] ?? null,
             'provider' => 'lemon_squeezy',
             'event_type' => 'order.refunded',
-            'provider_event_id' => $data['identifier'] ?? $data['id'],
+            'provider_event_id' => $data['identifier'] ?? $orderId,
             'amount_cents' => isset($data['refunded_amount']) ? (int) ($data['refunded_amount'] * 100) : null,
             'currency' => $data['currency'] ?? 'USD',
             'status' => 'success',
             'payload' => $payload,
         ]);
 
-        Log::info('Lemon Squeezy order refunded', ['order_id' => $data['id']]);
+        Log::info('Lemon Squeezy order refunded', ['order_id' => $orderId]);
     }
 
     // ===== HELPER METHODS =====
