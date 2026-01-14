@@ -261,7 +261,10 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
         // Send activation email
         $this->subscriptionService->sendActivationEmail($tenant, $subscription);
 
-        Log::info('Lemon Squeezy subscription created', ['subscription_id' => $subscription->id]);
+        Log::info('Lemon Squeezy subscription created', [
+            'subscription_id' => $subscription->id,
+            'provider_subscription_id' => $subscriptionId,
+        ]);
     }
 
     private function handleSubscriptionUpdated(array $payload): void

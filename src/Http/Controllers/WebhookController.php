@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use ThunderPack\Services\Gateways\LemonSqueezyGateway;
+use ThunderPack\Models\LemonSqueezyWebhook;
 
 class WebhookController
 {
@@ -41,6 +42,15 @@ class WebhookController
                 Log::error('Lemon Squeezy webhook invalid JSON');
                 return response('Invalid JSON', 400);
             }
+
+            // Store webhook in database for debugging
+            LemonSqueezyWebhook::create([
+                'event_name' => $data['meta']['event_name'] ?? 'unknown',
+                'event_id' => $data['data']['id'] ?? null,
+                'signature' => substr($signature, 0, 50),
+                'payload' => $data,
+                'received_at' => now(),
+            ]);
 
             // Delegate to gateway
             $gateway->handleWebhook($data);
