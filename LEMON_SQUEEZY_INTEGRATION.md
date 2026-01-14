@@ -228,18 +228,38 @@ LEMON_SQUEEZY_SIGNING_SECRET=your-signing-secret-here
 
 ### Sincronización Manual de Planes
 
-1. **En Lemon Squeezy Dashboard**:
-   - Crear productos (ej: "Plan Basic", "Plan Pro")
-   - Para cada producto, crear 2 variants:
-     - Variant 1: Monthly ($XX/mes)
-     - Variant 2: Yearly ($XX/año)
-   - Copiar los "Variant IDs" de cada uno
+**IMPORTANTE**: En Lemon Squeezy, 1 producto = 1 plan con múltiples variantes (no crear productos separados para mensual/anual)
 
-2. **En Thunder-Pack SuperAdmin** (o directamente en BD):
-   - Editar cada plan en tabla `plans`
-   - Pegar `lemon_monthly_variant_id` con ID del variant mensual
-   - Pegar `lemon_yearly_variant_id` con ID del variant anual
-   - Establecer `yearly_price_cents` (ej: `119900` para $1,199.00/año)
+1. **En Lemon Squeezy Dashboard**:
+   - Crear UN producto por cada plan (ej: "Plan Basic", "Plan Pro")
+   - Para cada producto, crear 2 VARIANTES dentro del mismo producto:
+     - **Variante 1**: Monthly - $XX/mes (ej: $9.99/month)
+     - **Variante 2**: Yearly - $XX/año (ej: $99/year - 20% descuento)
+   - Copiar los **Variant IDs** de cada variante (NO el product ID)
+   
+   **Ejemplo correcto**:
+   ```
+   Producto: "Custody - Plan Básico"
+     └── Variant ID 123456 → Monthly ($9.99/mes)
+     └── Variant ID 123457 → Yearly ($99/año)
+   ```
+
+2. **En Custody SuperAdmin Panel** (`/sa/lemon-squeezy-test`):
+   - Ir a sección "Sincronización de Planes"
+   - Para cada plan local:
+     - Pegar el Variant ID mensual en el campo "Variant ID Mensual"
+     - Pegar el Variant ID anual en el campo "Variant ID Anual"
+     - Click en "💾 Guardar Variant IDs"
+   - Verificar que aparezcan los checkmarks verdes "✓ Configurado"
+
+**O directamente en base de datos**:
+```sql
+-- Actualizar Plan Básico con variant IDs de Lemon Squeezy
+UPDATE plans 
+SET lemon_monthly_variant_id = '123456',  -- Reemplazar con tu variant ID mensual
+    lemon_yearly_variant_id = '123457'     -- Reemplazar con tu variant ID anual
+WHERE name = 'Plan Básico';
+```
 
 ---
 

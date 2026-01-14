@@ -18,9 +18,7 @@ use ThunderPack\Http\Controllers\WebhookController;
 Route::get('/invitations/accept/{token}', \ThunderPack\Livewire\Team\AcceptInvitation::class)
     ->name('thunder-pack.invitations.accept');
 
-// Webhook Routes (no auth required, CSRF excluded in middleware)
-Route::post('/webhooks/lemon-squeezy', [WebhookController::class, 'lemonSqueezy'])
-    ->name('thunder-pack.webhooks.lemon-squeezy');
+// NOTE: Webhook route registered separately in ServiceProvider to avoid middleware conflicts
 
 // Auth Required Routes
 Route::middleware('auth')->group(function () {

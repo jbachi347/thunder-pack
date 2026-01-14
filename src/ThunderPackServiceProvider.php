@@ -198,6 +198,12 @@ class ThunderPackServiceProvider extends ServiceProvider
     protected function registerRoutes(): void
     {
         if (config('thunder-pack.routes.enabled', true)) {
+            // Register webhook routes separately WITHOUT auth middleware
+            Route::post('/webhooks/lemon-squeezy', [\ThunderPack\Http\Controllers\WebhookController::class, 'lemonSqueezy'])
+                ->middleware(['api'])
+                ->name('thunder-pack.webhooks.lemon-squeezy');
+            
+            // Register all other routes with web middleware
             Route::group($this->routeConfiguration(), function () {
                 $this->loadRoutesFrom(__DIR__.'/../routes/thunder-pack.php');
             });
