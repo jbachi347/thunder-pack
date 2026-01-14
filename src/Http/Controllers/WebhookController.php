@@ -16,6 +16,17 @@ class WebhookController
     {
         $payload = $request->getContent();
         $signature = $request->header('X-Signature');
+        
+        // Log for debugging
+        Log::info('Webhook received', [
+            'has_signature' => !empty($signature),
+            'signature_preview' => $signature ? substr($signature, 0, 20) . '...' : 'null',
+        ]);
+
+        if (!$signature) {
+            Log::error('Webhook signature missing');
+            return response('Signature header missing', 401);
+        }
 
         // Verify webhook signature
         if (!$gateway->verifyWebhookSignature($payload, $signature)) {
