@@ -380,6 +380,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
+            Log::warning('Lemon Squeezy payment_success: subscription not found', ['subscription_id' => $subscriptionId]);
             return;
         }
 
@@ -414,6 +415,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
+            Log::warning('Lemon Squeezy payment_failed: subscription not found', ['subscription_id' => $subscriptionId]);
             return;
         }
 
@@ -442,6 +444,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
+            Log::warning('Lemon Squeezy payment_recovered: subscription not found', ['subscription_id' => $subscriptionId]);
             return;
         }
 
@@ -459,6 +462,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
+            Log::warning('Lemon Squeezy payment_refunded: subscription not found', ['subscription_id' => $subscriptionId]);
             return;
         }
 
