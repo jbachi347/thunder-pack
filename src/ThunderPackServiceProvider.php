@@ -211,7 +211,7 @@ class ThunderPackServiceProvider extends ServiceProvider
     {
         return [
             'prefix' => config('thunder-pack.routes.prefix', ''),
-            'middleware' => config('thunder-pack.routes.middleware', ['web', 'auth']),
+            'middleware' => config('thunder-pack.routes.middleware', ['web']), // Removed 'auth' - routes handle their own auth
         ];
     }
 
