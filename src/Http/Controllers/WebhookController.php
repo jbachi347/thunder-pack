@@ -1,0 +1,48 @@
+<?php
+
+namespace ThunderPack\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use ThunderPack\Services\Gateways\LemonSqueezyGateway;
+
+class WebhookController
+{
+    /**
+     * Handle Lemon Squeezy webhooks
+     */
+    public function lemonSqueezy(Request $request, LemonSqueezyGateway $gateway): Response
+    {
+        $payload = $request->getContent();
+        $signature = $request->header('X-Signature');
+
+        // Verify webhook signature
+        if (!$gateway->verifyWebhookSignature($payload, $signature)) {
+            Log::warning('Lemon Squeezy webhook signature verification failed');
+            return response('Invalid signature', 401);
+        }
+
+        try {
+            $data = json_decode($payload, true);
+
+            if (!$data) {
+                Log::error('Lemon Squeezy webhook invalid JSON');
+                return response('Invalid JSON', 400);
+            }
+
+            // Delegate to gateway
+            $gateway->handleWebhook($data);
+
+            return response('Webhook handled', 200);
+        } catch (\Exception $e) {
+            Log::error('Lemon Squeezy webhook processing error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            // Return 200 to avoid Lemon Squeezy retries for invalid data
+            return response('Webhook received', 200);
+        }
+    }
+}

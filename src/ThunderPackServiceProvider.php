@@ -15,6 +15,8 @@ use ThunderPack\Http\Middleware\CheckTenantPermission;
 use ThunderPack\Http\Middleware\EnsureSuperAdmin;
 use ThunderPack\Http\Middleware\TenantMiddleware;
 use ThunderPack\Services\FeatureGate;
+use ThunderPack\Services\Gateways\LemonSqueezyGateway;
+use ThunderPack\Services\Gateways\ManualGateway;
 use ThunderPack\Services\LimitNotificationService;
 use ThunderPack\Services\PlanLimitService;
 use ThunderPack\Services\SubscriptionService;
@@ -52,6 +54,15 @@ class ThunderPackServiceProvider extends ServiceProvider
 
         $this->app->singleton(LimitNotificationService::class, function ($app) {
             return new LimitNotificationService();
+        });
+
+        // Register payment gateways
+        $this->app->singleton(ManualGateway::class, function ($app) {
+            return new ManualGateway($app->make(SubscriptionService::class));
+        });
+
+        $this->app->singleton(LemonSqueezyGateway::class, function ($app) {
+            return new LemonSqueezyGateway($app->make(SubscriptionService::class));
         });
     }
 
@@ -149,6 +160,7 @@ class ThunderPackServiceProvider extends ServiceProvider
         Livewire::component('thunder-pack::create-tenant-with-plan', \ThunderPack\Livewire\CreateTenantWithPlan::class);
         Livewire::component('thunder-pack::subscription-expired', \ThunderPack\Livewire\SubscriptionExpired::class);
         Livewire::component('thunder-pack::subscription-status-badge', \ThunderPack\Livewire\SubscriptionStatusBadge::class);
+        Livewire::component('thunder-pack::choose-plan', \ThunderPack\Livewire\ChoosePlan::class);
 
         // Super Admin components
         Livewire::component('thunder-pack::super-admin.dashboard', \ThunderPack\Livewire\SuperAdmin\Dashboard::class);

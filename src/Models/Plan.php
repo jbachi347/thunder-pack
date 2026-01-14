@@ -12,7 +12,10 @@ class Plan extends Model
         'staff_limit',
         'storage_quota_bytes',
         'monthly_price_cents',
+        'yearly_price_cents',
         'currency',
+        'lemon_monthly_variant_id',
+        'lemon_yearly_variant_id',
         'features',
     ];
 
@@ -20,6 +23,7 @@ class Plan extends Model
         'staff_limit' => 'integer',
         'storage_quota_bytes' => 'integer',
         'monthly_price_cents' => 'integer',
+        'yearly_price_cents' => 'integer',
         'features' => 'array',
     ];
 
@@ -33,6 +37,29 @@ class Plan extends Model
     public function getMonthlyPriceAttribute()
     {
         return $this->monthly_price_cents / 100;
+    }
+
+    public function getYearlyPriceAttribute()
+    {
+        return $this->yearly_price_cents ? $this->yearly_price_cents / 100 : null;
+    }
+
+    /**
+     * Get Lemon Squeezy variant ID for a billing cycle
+     */
+    public function getLemonVariantId(string $billingCycle): ?string
+    {
+        return $billingCycle === 'yearly' 
+            ? $this->lemon_yearly_variant_id 
+            : $this->lemon_monthly_variant_id;
+    }
+
+    /**
+     * Check if plan has Lemon Squeezy integration configured
+     */
+    public function hasLemonSqueezyIntegration(): bool
+    {
+        return !empty($this->lemon_monthly_variant_id) || !empty($this->lemon_yearly_variant_id);
     }
 
     /**

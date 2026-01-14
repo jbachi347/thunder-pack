@@ -8,6 +8,7 @@ use ThunderPack\Models\Subscription;
 use ThunderPack\Models\SubscriptionNotification;
 use ThunderPack\Models\Tenant;
 use ThunderPack\Mail\SubscriptionActivated;
+use ThunderPack\Services\Gateways\PaymentGatewayInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +20,33 @@ class SubscriptionService
      * Días de anticipación para notificación de expiración
      */
     const EXPIRING_THRESHOLD_DAYS = 7;
+
+    /**
+     * Get payment gateway by provider name
+     */
+    public function getGateway(string $provider): PaymentGatewayInterface
+    {
+        return match ($provider) {
+            'manual' => app(\ThunderPack\Services\Gateways\ManualGateway::class),
+            'lemon_squeezy' => app(\ThunderPack\Services\Gateways\LemonSqueezyGateway::class),
+            default => throw new Exception("Unsupported payment provider: {$provider}"),
+        };
+    }
+
+    /**
+     * Create a checkout URL for a plan
+     * 
+     * @param Tenant $tenant
+     * @param Plan $plan
+     * @param string $provider Provider name (manual, lemon_squeezy, etc.)
+     * @param string $billingCycle Billing cycle (monthly, yearly)
+     * @return string Checkout URL
+     */
+    public function createCheckout(Tenant $tenant, Plan $plan, string $provider = 'lemon_squeezy', string $billingCycle = 'monthly'): string
+    {
+        $gateway = $this->getGateway($provider);
+        return $gateway->createCheckoutUrl($plan, $tenant, $billingCycle);
+    }
 
     /**
      * Activar suscripción manualmente
@@ -171,7 +199,7 @@ class SubscriptionService
     /**
      * Eliminar notificaciones previas (para nuevo periodo)
      */
-    protected function clearNotifications(Subscription $subscription): void
+    public function clearNotifications(Subscription $subscription): void
     {
         SubscriptionNotification::where('subscription_id', $subscription->id)->delete();
     }
@@ -179,7 +207,7 @@ class SubscriptionService
     /**
      * Enviar email de activación/renovación
      */
-    protected function sendActivationEmail(Tenant $tenant, Subscription $subscription): void
+    public function sendActivationEmail(Tenant $tenant, Subscription $subscription): void
     {
         $owner = $tenant->users()->wherePivot('is_owner', true)->first();
 

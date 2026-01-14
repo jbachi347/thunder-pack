@@ -5,6 +5,54 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-01-14
+
+### Added
+- **Lemon Squeezy Payment Gateway Integration** - Full payment gateway abstraction system
+  - `PaymentGatewayInterface` for multi-gateway support
+  - `ManualGateway` encapsulating existing manual payment logic
+  - `LemonSqueezyGateway` with direct API integration (no official package dependency)
+  - `WebhookController` for processing Lemon Squeezy webhooks with signature verification
+  - Support for 12 webhook event types (subscription lifecycle, payments, refunds)
+  - Automatic subscription creation and updates from webhooks
+  - Customer portal URL generation for self-service subscription management
+  - Plan upgrade/downgrade detection and handling
+- **Database Schema Updates**
+  - Added `lemon_monthly_variant_id` and `lemon_yearly_variant_id` to `plans` table
+  - Added `yearly_price_cents` to `plans` table for annual billing support
+  - Added `billing_cycle` (monthly/yearly) to `subscriptions` table
+  - Added `next_billing_date` to `subscriptions` table (fixes missing field used in code)
+- **Model Enhancements**
+  - `Plan::getYearlyPrice()` accessor for annual pricing
+  - `Plan::getLemonVariantId($billingCycle)` helper method
+  - `Plan::hasLemonSqueezyIntegration()` check method
+  - Added `billing_cycle` and `next_billing_date` to Subscription fillable/casts
+- **SubscriptionService Enhancements**
+  - `getGateway($provider)` method for gateway resolution
+  - `createCheckout($tenant, $plan, $provider, $billingCycle)` for checkout URL generation
+  - `clearNotifications()` and `sendActivationEmail()` now public for gateway access
+- **ChoosePlan Livewire Component**
+  - Full-featured plan selection UI with monthly/yearly toggle
+  - Responsive design with dark mode support
+  - Automatic checkout URL generation and redirect to Lemon Squeezy
+  - Feature list display from plan JSON data
+  - Error handling and loading states
+- **Configuration**
+  - Added `lemon_squeezy` section to config with `api_key`, `store_id`, `signing_secret`
+- **Routes**
+  - Added `/webhooks/lemon-squeezy` webhook endpoint (POST, no auth)
+  - Added `/plans` route for plan selection (auth + tenant required)
+
+### Changed
+- Payment gateway logic abstracted into pluggable interface system
+- Existing manual payment functionality preserved and encapsulated in `ManualGateway`
+
+### Fixed
+- Critical: `next_billing_date` column migration was missing despite being used in code
+
+### Documentation
+- Added comprehensive `LEMON_SQUEEZY_INTEGRATION.md` with setup guide, webhook reference, and troubleshooting
+
 ## [1.4.2] - 2026-01-12
 
 ### Added

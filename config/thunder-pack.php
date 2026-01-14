@@ -108,6 +108,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Lemon Squeezy Integration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for Lemon Squeezy payment gateway.
+    | Get your API key from: https://app.lemonsqueezy.com/settings/api
+    | Get your store ID from: https://app.lemonsqueezy.com/settings/stores
+    |
+    */
+
+    'lemon_squeezy' => [
+        'api_key' => env('LEMON_SQUEEZY_API_KEY'),
+        'store_id' => env('LEMON_SQUEEZY_STORE_ID'),
+        'signing_secret' => env('LEMON_SQUEEZY_SIGNING_SECRET'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | WhatsApp Integration
     |--------------------------------------------------------------------------
     |

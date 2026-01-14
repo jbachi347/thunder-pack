@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use ThunderPack\Http\Controllers\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/invitations/accept/{token}', \ThunderPack\Livewire\Team\AcceptInvitation::class)
     ->name('thunder-pack.invitations.accept');
 
+// Webhook Routes (no auth required, CSRF excluded in middleware)
+Route::post('/webhooks/lemon-squeezy', [WebhookController::class, 'lemonSqueezy'])
+    ->name('thunder-pack.webhooks.lemon-squeezy');
+
 // Auth Required Routes
 Route::middleware('auth')->group(function () {
     
@@ -27,6 +32,12 @@ Route::middleware('auth')->group(function () {
     // Subscription Expired Page
     Route::get('/subscription/expired', \ThunderPack\Livewire\SubscriptionExpired::class)
         ->name('thunder-pack.subscription.expired');
+    
+    // Plan Selection (requires tenant)
+    Route::middleware(['tenant'])->group(function () {
+        Route::get('/plans', \ThunderPack\Livewire\ChoosePlan::class)
+            ->name('thunder-pack.plans.choose');
+    });
     
     // Team Management (requires tenant and active subscription)
     Route::middleware(['tenant', 'subscription'])->group(function () {

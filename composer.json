@@ -1,6 +1,6 @@
 {
     "name": "bachisoft/thunder-pack",
-    "version": "1.4.2",
+    "version": "1.5.0",
     "description": "Laravel multi-tenant SaaS package with subscription management, flexible limits system, and WhatsApp integration",
     "keywords": [
         "laravel",
@@ -31,7 +31,8 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "livewire/livewire": "^3.6.4"
+        "livewire/livewire": "^3.6.4",
+        "lemonsqueezy/laravel": "^1.8.3"
     },
     "require-dev": {
         "orchestra/testbench": "^10.0",

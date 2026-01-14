@@ -12,18 +12,21 @@ class Subscription extends Model
         'plan_id',
         'uuid',
         'status',
+        'billing_cycle',
         'provider',
         'provider_customer_id',
         'provider_subscription_id',
         'provider_payload',
         'trial_ends_at',
         'ends_at',
+        'next_billing_date',
     ];
 
     protected $casts = [
         'provider_payload' => 'array',
         'trial_ends_at' => 'datetime',
         'ends_at' => 'datetime',
+        'next_billing_date' => 'datetime',
     ];
 
     /**
