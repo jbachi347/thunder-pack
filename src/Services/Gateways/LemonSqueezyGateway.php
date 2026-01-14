@@ -379,7 +379,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handlePaymentSuccess(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscriptionId = $payload['data']['id'];
+        $subscriptionId = $data['subscription_id']; // Payment events have subscription_id in attributes
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
@@ -414,7 +414,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handlePaymentFailed(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscriptionId = $payload['data']['id'];
+        $subscriptionId = $data['subscription_id']; // Payment events have subscription_id in attributes
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
@@ -443,7 +443,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handlePaymentRecovered(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscriptionId = $payload['data']['id'];
+        $subscriptionId = $data['subscription_id']; // Payment events have subscription_id in attributes
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
@@ -461,7 +461,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handlePaymentRefunded(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscriptionId = $payload['data']['id'];
+        $subscriptionId = $data['subscription_id']; // Payment events have subscription_id in attributes
         $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
