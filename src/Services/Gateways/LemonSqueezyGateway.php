@@ -169,6 +169,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
             'subscription_payment_success' => $this->handlePaymentSuccess($payload),
             'subscription_payment_failed' => $this->handlePaymentFailed($payload),
             'subscription_payment_recovered' => $this->handlePaymentRecovered($payload),
+            'subscription_payment_refunded' => $this->handlePaymentRefunded($payload),
+            'subscription_plan_changed' => $this->handleSubscriptionUpdated($payload), // Same as updated
             'order_created' => $this->handleOrderCreated($payload),
             'order_refunded' => $this->handleOrderRefunded($payload),
             default => Log::info("Unhandled Lemon Squeezy event: {$eventName}"),
@@ -448,6 +450,29 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
         ]);
 
         Log::info('Lemon Squeezy payment recovered', ['subscription_id' => $subscription->id]);
+    }
+
+    private function handlePaymentRefunded(array $payload): void
+    {
+        $data = $payload['data']['attributes'];
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
+
+        if (!$subscription) {
+            return;
+        }
+
+        // Record payment event
+        PaymentEvent::create([
+            'tenant_id' => $subscription->tenant_id,
+            'provider' => 'lemon_squeezy',
+            'event_type' => 'subscription.payment.refunded',
+            'provider_event_id' => $payload['meta']['event_name'] . '_' . $subscriptionId,
+            'status' => 'success',
+            'payload' => $payload,
+        ]);
+
+        Log::info('Lemon Squeezy payment refunded', ['subscription_id' => $subscription->id]);
     }
 
     private function handleOrderCreated(array $payload): void

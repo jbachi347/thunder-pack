@@ -1,6 +1,6 @@
 {
     "name": "bachisoft/thunder-pack",
-    "version": "1.5.5",
+    "version": "1.5.6",
     "description": "Laravel multi-tenant SaaS package with subscription management, flexible limits system, and WhatsApp integration",
     "keywords": [
         "laravel",
