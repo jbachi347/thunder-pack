@@ -374,7 +374,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handlePaymentSuccess(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['subscription_id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
@@ -385,7 +386,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
             'tenant_id' => $subscription->tenant_id,
             'provider' => 'lemon_squeezy',
             'event_type' => 'subscription.payment.success',
-            'provider_event_id' => $payload['meta']['event_name'] . '_' . $data['id'],
+            'provider_event_id' => $payload['meta']['event_name'] . '_' . $subscriptionId,
             'amount_cents' => isset($data['total']) ? (int) ($data['total'] * 100) : null,
             'currency' => $data['currency'] ?? 'USD',
             'status' => 'success',
@@ -407,7 +408,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handlePaymentFailed(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['subscription_id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
@@ -418,7 +420,7 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
             'tenant_id' => $subscription->tenant_id,
             'provider' => 'lemon_squeezy',
             'event_type' => 'subscription.payment.failed',
-            'provider_event_id' => $payload['meta']['event_name'] . '_' . $data['id'],
+            'provider_event_id' => $payload['meta']['event_name'] . '_' . $subscriptionId,
             'status' => 'failed',
             'payload' => $payload,
         ]);
@@ -434,7 +436,8 @@ class LemonSqueezyGateway implements PaymentGatewayInterface
     private function handlePaymentRecovered(array $payload): void
     {
         $data = $payload['data']['attributes'];
-        $subscription = Subscription::where('provider_subscription_id', $data['subscription_id'])->first();
+        $subscriptionId = $payload['data']['id'];
+        $subscription = Subscription::where('provider_subscription_id', $subscriptionId)->first();
 
         if (!$subscription) {
             return;
