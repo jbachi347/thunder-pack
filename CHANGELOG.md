@@ -5,6 +5,43 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-01-17
+
+### Added
+- **Complete Tenant CRUD** - Full tenant management in SuperAdmin panel
+  - `TenantsCreate` component for creating new tenants with form validation
+  - `TenantsEdit` component for updating tenant information
+  - Auto-generation of unique slugs from tenant names
+  - Storage quota management in GB (converted to bytes internally)
+  - Routes: `/sa/tenants/create`, `/sa/tenants/{tenant}/edit`
+- **Complete User Management System** - Full user CRUD and tenant assignment
+  - `UsersIndex` component with search and filtering (by type, role, tenant)
+  - `UsersShow` component with inline editing of basic info and password
+  - `UsersCreate` component with multi-tenant assignment
+  - User-tenant relationship management (add/remove tenants, change roles)
+  - Super Admin badge display and filtering
+  - Routes: `/sa/users`, `/sa/users/create`, `/sa/users/{user}`
+- **UI/UX Improvements**
+  - Converted `TenantsIndex` from card layout to compact table format
+  - Converted `SubscriptionsIndex` from card layout to table format
+  - Added "Users" link to SuperAdmin sidebar navigation
+  - Consistent minimalist design across all SuperAdmin components
+  - Dark mode support in all new components
+
+### Changed
+- **TenantsIndex** now uses table format matching PlansIndex style
+- **SubscriptionsIndex** now uses table format with improved stats cards
+- SuperAdmin sidebar menu reordered: Dashboard → Organizaciones → Usuarios → Suscripciones → Planes
+
+### Fixed
+- **Storage display bug** - Changed from MB to GB in TenantsIndex (now correctly divides by 1024³ instead of 1024²)
+- Storage quota now displays as "X.XX GB / Y GB" format consistently
+
+### Documentation
+- Added comprehensive Copilot instructions file (`.github/copilot-instructions.md`)
+- Documented package publishing workflow and semantic versioning guidelines
+- Added UI design system standards and component creation patterns
+
 ## [1.5.0] - 2026-01-14
 
 ### Added

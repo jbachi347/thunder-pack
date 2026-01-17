@@ -55,11 +55,13 @@ Paquete completo de Laravel para construir aplicaciones SaaS multi-tenant con ge
 
 ### Panel de Super Admin
 - Dashboard con métricas clave
-- Gestión de tenants y usuarios
-- Gestión de suscripciones
-- Configuración de límites personalizados
+- **Gestión completa de tenants** (crear, editar, ver, límites personalizados)
+- **Gestión completa de usuarios** (crear, editar, asignar tenants, cambiar roles)
+- Gestión de suscripciones con renovación rápida
+- Gestión de planes con límites configurables
 - Configuración de WhatsApp por tenant
 - Historial de uso y eventos
+- Interfaz de tablas compactas y minimalistas
 
 ### Gestión de Equipos
 - Invitaciones por email
