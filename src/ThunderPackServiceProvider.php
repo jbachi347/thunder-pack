@@ -165,12 +165,17 @@ class ThunderPackServiceProvider extends ServiceProvider
         // Super Admin components
         Livewire::component('thunder-pack::super-admin.dashboard', \ThunderPack\Livewire\SuperAdmin\Dashboard::class);
         Livewire::component('thunder-pack::super-admin.tenants-index', \ThunderPack\Livewire\SuperAdmin\TenantsIndex::class);
+        Livewire::component('thunder-pack::super-admin.tenants-create', \ThunderPack\Livewire\SuperAdmin\TenantsCreate::class);
+        Livewire::component('thunder-pack::super-admin.tenants-edit', \ThunderPack\Livewire\SuperAdmin\TenantsEdit::class);
         Livewire::component('thunder-pack::super-admin.tenant-show', \ThunderPack\Livewire\SuperAdmin\TenantShow::class);
         Livewire::component('thunder-pack::super-admin.tenant-limits', \ThunderPack\Livewire\SuperAdmin\TenantLimits::class);
         Livewire::component('thunder-pack::super-admin.subscriptions-index', \ThunderPack\Livewire\SuperAdmin\SubscriptionsIndex::class);
         Livewire::component('thunder-pack::super-admin.subscription-show', \ThunderPack\Livewire\SuperAdmin\SubscriptionShow::class);
         Livewire::component('thunder-pack::super-admin.plans-index', \ThunderPack\Livewire\SuperAdmin\PlansIndex::class);
         Livewire::component('thunder-pack::super-admin.plan-limits', \ThunderPack\Livewire\SuperAdmin\PlanLimits::class);
+        Livewire::component('thunder-pack::super-admin.users-index', \ThunderPack\Livewire\SuperAdmin\UsersIndex::class);
+        Livewire::component('thunder-pack::super-admin.users-create', \ThunderPack\Livewire\SuperAdmin\UsersCreate::class);
+        Livewire::component('thunder-pack::super-admin.users-show', \ThunderPack\Livewire\SuperAdmin\UsersShow::class);
 
         // Team components
         Livewire::component('thunder-pack::team.index', \ThunderPack\Livewire\Team\Index::class);

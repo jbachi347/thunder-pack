@@ -60,16 +60,19 @@
                 <thead class="bg-gray-50 dark:bg-gray-900">
                     <tr>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Tenant
+                            Organización
                         </th>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Usuarios
                         </th>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Almacenamiento
+                            Storage (Usado/Cuota)
                         </th>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Estado
+                            Suscripción
+                        </th>
+                        <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Creado
                         </th>
                         <th scope="col" class="px-4 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Acciones
@@ -87,20 +90,40 @@
                                     <p class="text-xs text-gray-500 dark:text-gray-400">
                                         {{ $tenant->slug }}
                                     </p>
+                                    @if($tenant->brand_name)
+                                        <p class="text-xs text-gray-400 dark:text-gray-500">
+                                            🏷️ {{ $tenant->brand_name }}
+                                        </p>
+                                    @endif
                                 </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium {{ $tenant->users_count > 0 ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300' }}">
-                                    {{ $tenant->users_count }}
+                                    {{ $tenant->users_count }} {{ $tenant->users_count == 1 ? 'usuario' : 'usuarios' }}
                                 </span>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                {{ number_format($tenant->storage_used_bytes / 1024 / 1024 / 1024, 2) }} GB / {{ number_format($tenant->storage_quota_bytes / 1024 / 1024 / 1024, 0) }} GB
+                                @php
+                                    $usedGB = $tenant->storage_used_bytes / 1024 / 1024 / 1024;
+                                    $quotaGB = $tenant->storage_quota_bytes / 1024 / 1024 / 1024;
+                                    $percentage = $quotaGB > 0 ? ($usedGB / $quotaGB) * 100 : 0;
+                                    $colorClass = $percentage > 90 ? 'text-red-600 dark:text-red-400' : ($percentage > 70 ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300');
+                                @endphp
+                                <div class="{{ $colorClass }}">
+                                    <span class="font-medium">{{ number_format($usedGB, 2) }} GB</span>
+                                    <span class="text-gray-400 dark:text-gray-500">/</span>
+                                    <span>{{ number_format($quotaGB, 0) }} GB</span>
+                                </div>
+                                <div class="mt-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
+                                    <div class="h-1 rounded-full {{ $percentage > 90 ? 'bg-red-500' : ($percentage > 70 ? 'bg-yellow-500' : 'bg-blue-500') }}" 
+                                         style="width: {{ min($percentage, 100) }}%"></div>
+                                </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
                                 @if($tenant->subscriptions->first())
                                     @php
-                                        $status = $tenant->subscriptions->first()->status;
+                                        $subscription = $tenant->subscriptions->first();
+                                        $status = $subscription->status;
                                         $statusColors = [
                                             'active' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
                                             'trialing' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
@@ -109,14 +132,25 @@
                                         ];
                                         $colorClass = $statusColors[$status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
                                     @endphp
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $colorClass }}">
-                                        {{ ucfirst($status) }}
-                                    </span>
+                                    <div>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $colorClass }}">
+                                            {{ ucfirst($status) }}
+                                        </span>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                            {{ $subscription->plan->name }}
+                                        </p>
+                                    </div>
                                 @else
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                                         Sin suscripción
                                     </span>
                                 @endif
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                <div>
+                                    <p>{{ $tenant->created_at->format('d/m/Y') }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $tenant->created_at->diffForHumans() }}</p>
+                                </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                                 <a href="{{ route('thunder-pack.sa.tenants.show', $tenant) }}"
@@ -131,7 +165,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                            <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
                                 No se encontraron tenants
                             </td>
                         </tr>

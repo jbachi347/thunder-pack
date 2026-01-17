@@ -78,13 +78,16 @@
                 <thead class="bg-gray-50 dark:bg-gray-900">
                     <tr>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            Tenant
+                            Organización
                         </th>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Plan
                         </th>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Precio
+                        </th>
+                        <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Inicio
                         </th>
                         <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             Vencimiento
@@ -101,19 +104,49 @@
                     @forelse($subscriptions as $subscription)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                             <td class="px-4 py-3 whitespace-nowrap">
-                                <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                    {{ $subscription->tenant->name }}
-                                </p>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {{ $subscription->tenant->name }}
+                                    </p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                        {{ $subscription->tenant->slug }}
+                                    </p>
+                                </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                {{ $subscription->plan->name }}
+                                <div>
+                                    <p class="font-medium">{{ $subscription->plan->name }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                        ID: #{{ $subscription->id }}
+                                    </p>
+                                </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                ${{ number_format($subscription->plan->monthly_price_cents / 100, 2) }}/mes
+                                <span class="font-medium">${{ number_format($subscription->plan->monthly_price_cents / 100, 2) }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">/mes</span>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                @if($subscription->starts_at)
+                                    <div>
+                                        <p>{{ $subscription->starts_at->format('d/m/Y') }}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $subscription->starts_at->diffForHumans() }}</p>
+                                    </div>
+                                @else
+                                    <span class="text-gray-400 dark:text-gray-500">—</span>
+                                @endif
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                 @if($subscription->ends_at)
-                                    {{ $subscription->ends_at->format('d/m/Y') }}
+                                    @php
+                                        $isExpiringSoon = $subscription->ends_at->diffInDays(now()) <= 7 && $subscription->ends_at->isFuture();
+                                        $isExpired = $subscription->ends_at->isPast();
+                                    @endphp
+                                    <div>
+                                        <p class="{{ $isExpired ? 'text-red-600 dark:text-red-400 font-medium' : ($isExpiringSoon ? 'text-yellow-600 dark:text-yellow-400 font-medium' : '') }}">
+                                            {{ $subscription->ends_at->format('d/m/Y') }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $subscription->ends_at->diffForHumans() }}</p>
+                                    </div>
                                 @else
                                     <span class="text-gray-400 dark:text-gray-500">—</span>
                                 @endif
@@ -126,26 +159,35 @@
                                         'past_due' => 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
                                         'canceled' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
                                     ];
+                                    $statusLabels = [
+                                        'active' => 'Activa',
+                                        'trialing' => 'Prueba',
+                                        'past_due' => 'Vencida',
+                                        'canceled' => 'Cancelada',
+                                    ];
                                     $colorClass = $statusColors[$subscription->status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+                                    $label = $statusLabels[$subscription->status] ?? ucfirst($subscription->status);
                                 @endphp
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $colorClass }}">
-                                    {{ ucfirst($subscription->status) }}
+                                    {{ $label }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+                            <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium space-x-2">
                                 <a href="{{ route('thunder-pack.sa.subscriptions.show', $subscription) }}"
-                                    class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-3">
+                                    class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300">
                                     Ver
                                 </a>
-                                <button wire:click="quickRenew({{ $subscription->id }}, 30)"
-                                    class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">
-                                    Renovar
-                                </button>
+                                @if($subscription->status !== 'canceled')
+                                    <button wire:click="quickRenew({{ $subscription->id }}, 30)"
+                                        class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">
+                                        Renovar 30d
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                            <td colspan="7" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
                                 No se encontraron suscripciones
                             </td>
                         </tr>

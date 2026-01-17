@@ -5,6 +5,21 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2026-01-17
+
+### Fixed
+- Registered missing Livewire components in ServiceProvider (TenantsCreate, TenantsEdit, UsersIndex, UsersCreate, UsersShow)
+- Fixed "Unable to find component" error when using tenant and user CRUD operations
+
+### Changed
+- Enhanced Tenants table with storage progress bar and color-coded alerts (>90% red, >70% yellow)
+- Added "Created" column in Tenants table showing both absolute and relative dates
+- Improved Subscriptions table with "Start Date" column and expiration date visual alerts
+- Added plan name under subscription status badge in Tenants table
+- Improved status badges with Spanish translations (Activa, Prueba, Vencida, Cancelada)
+- Added brand_name display in tenant row (if exists)
+- Enhanced storage display with percentage bar and color indicators
+
 ## [1.6.0] - 2026-01-17
 
 ### Added
