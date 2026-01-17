@@ -5,6 +5,20 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.2] - 2026-01-17
+
+### Added
+- TenantsDelete component with confirmation flow and safety checks
+- Users tab in TenantShow (/sa/tenants/{id}) displaying tenant's users with roles and status
+- Visual warnings when deleting tenant with active subscription (blocks deletion)
+- Tenant deletion requires typing slug for confirmation
+- Delete button in TenantShow header
+
+### Changed
+- TenantShow now has 4 tabs: Información, Usuarios, Suscripciones, WhatsApp
+- Users tab shows role badges (Owner, Admin, Member) and Super Admin status
+- Improved tenant deletion safety with user count, subscription check, and impact warnings
+
 ## [1.6.1] - 2026-01-17
 
 ### Fixed

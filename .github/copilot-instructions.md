@@ -41,8 +41,10 @@
 7. **Update consuming projects** (Custody, Thunder-Theme):
    ```bash
    composer update bachisoft/thunder-pack --no-cache
+   php artisan vendor:publish --tag=thunder-pack-views --force
    php artisan optimize:clear
    ```
+   **CRITICAL**: Always run `vendor:publish --force` to update local view overrides
 
 **Never** publish incomplete features or breaking changes without proper version bump.
 

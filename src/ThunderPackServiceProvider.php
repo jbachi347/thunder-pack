@@ -167,6 +167,7 @@ class ThunderPackServiceProvider extends ServiceProvider
         Livewire::component('thunder-pack::super-admin.tenants-index', \ThunderPack\Livewire\SuperAdmin\TenantsIndex::class);
         Livewire::component('thunder-pack::super-admin.tenants-create', \ThunderPack\Livewire\SuperAdmin\TenantsCreate::class);
         Livewire::component('thunder-pack::super-admin.tenants-edit', \ThunderPack\Livewire\SuperAdmin\TenantsEdit::class);
+        Livewire::component('thunder-pack::super-admin.tenants-delete', \ThunderPack\Livewire\SuperAdmin\TenantsDelete::class);
         Livewire::component('thunder-pack::super-admin.tenant-show', \ThunderPack\Livewire\SuperAdmin\TenantShow::class);
         Livewire::component('thunder-pack::super-admin.tenant-limits', \ThunderPack\Livewire\SuperAdmin\TenantLimits::class);
         Livewire::component('thunder-pack::super-admin.subscriptions-index', \ThunderPack\Livewire\SuperAdmin\SubscriptionsIndex::class);

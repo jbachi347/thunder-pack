@@ -70,6 +70,9 @@ if (config('thunder-pack.features.super_admin_panel', true)) {
             Route::get('/tenants/{tenant}/edit', \ThunderPack\Livewire\SuperAdmin\TenantsEdit::class)
                 ->name('tenants.edit');
             
+            Route::get('/tenants/{tenant}/delete', \ThunderPack\Livewire\SuperAdmin\TenantsDelete::class)
+                ->name('tenants.delete');
+            
             Route::get('/tenants/{tenant}/limits', \ThunderPack\Livewire\SuperAdmin\TenantLimits::class)
                 ->name('tenants.limits');
             

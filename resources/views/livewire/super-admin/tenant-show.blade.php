@@ -20,6 +20,13 @@
                     </svg>
                     Límites
                 </a>
+                <a href="{{ route('thunder-pack.sa.tenants.delete', $tenant) }}" 
+                   class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold uppercase rounded-md transition">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    Eliminar
+                </a>
                 <a href="{{ route('thunder-pack.sa.tenants.index') }}" class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">← Volver</a>
             </div>
         </div>
@@ -46,6 +53,13 @@
                                 class="px-6 py-3 text-sm font-medium border-b-2 transition {{ $activeTab === 'info' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300' }}">
                             Información
                         </button>
+                        <button wire:click="switchTab('users')" 
+                                class="px-6 py-3 text-sm font-medium border-b-2 transition {{ $activeTab === 'users' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300' }}">
+                            Usuarios
+                            <span class="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-full">
+                                {{ $tenant->users->count() }}
+                            </span>
+                        </button>
                         <button wire:click="switchTab('subscriptions')" 
                                 class="px-6 py-3 text-sm font-medium border-b-2 transition {{ $activeTab === 'subscriptions' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300' }}">
                             Suscripciones
@@ -66,6 +80,8 @@
                 <div class="p-6">
                     @if($activeTab === 'info')
                         @include('thunder-pack::livewire.super-admin.partials.tenant-info')
+                    @elseif($activeTab === 'users')
+                        @include('thunder-pack::livewire.super-admin.partials.tenant-users')
                     @elseif($activeTab === 'subscriptions')
                         @include('thunder-pack::livewire.super-admin.partials.tenant-subscriptions')
                     @elseif($activeTab === 'whatsapp')
