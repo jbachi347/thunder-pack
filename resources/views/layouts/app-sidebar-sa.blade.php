@@ -72,6 +72,10 @@
                            class="block px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('sa.tenants.*') ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                             Organizaciones
                         </a>
+                        <a href="{{ route('thunder-pack.sa.users.index') }}" 
+                           class="block px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('sa.users.*') ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
+                            Usuarios
+                        </a>
                         <a href="{{ route('thunder-pack.sa.subscriptions.index') }}" 
                            class="block px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('sa.subscriptions.*') ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                             Suscripciones

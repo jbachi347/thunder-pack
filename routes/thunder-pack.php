@@ -61,11 +61,27 @@ if (config('thunder-pack.features.super_admin_panel', true)) {
             Route::get('/tenants', \ThunderPack\Livewire\SuperAdmin\TenantsIndex::class)
                 ->name('tenants.index');
             
+            Route::get('/tenants/create', \ThunderPack\Livewire\SuperAdmin\TenantsCreate::class)
+                ->name('tenants.create');
+            
             Route::get('/tenants/{tenant}', \ThunderPack\Livewire\SuperAdmin\TenantShow::class)
                 ->name('tenants.show');
             
+            Route::get('/tenants/{tenant}/edit', \ThunderPack\Livewire\SuperAdmin\TenantsEdit::class)
+                ->name('tenants.edit');
+            
             Route::get('/tenants/{tenant}/limits', \ThunderPack\Livewire\SuperAdmin\TenantLimits::class)
                 ->name('tenants.limits');
+            
+            // Users Management
+            Route::get('/users', \ThunderPack\Livewire\SuperAdmin\UsersIndex::class)
+                ->name('users.index');
+            
+            Route::get('/users/create', \ThunderPack\Livewire\SuperAdmin\UsersCreate::class)
+                ->name('users.create');
+            
+            Route::get('/users/{user}', \ThunderPack\Livewire\SuperAdmin\UsersShow::class)
+                ->name('users.show');
             
             // Subscriptions Management
             Route::get('/subscriptions', \ThunderPack\Livewire\SuperAdmin\SubscriptionsIndex::class)
