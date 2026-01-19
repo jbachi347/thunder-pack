@@ -5,6 +5,24 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.3] - 2026-01-19
+
+### Fixed
+- **CRITICAL FIX**: Trial subscriptions now set BOTH `trial_ends_at` AND `ends_at` fields
+  - Previously, trial subscriptions only set `trial_ends_at` and left `ends_at` as NULL
+  - This broke agent validations that rely on `ends_at` for expiration checks
+  - Agents can now properly validate subscription expiration dates during trial period
+- Preserve `trial_ends_at` historical value when activating/renewing paid subscriptions
+  - Previously, `trial_ends_at` was set to NULL during renewal, losing historical record
+  - Trial end date now persists for auditing and historical tracking purposes
+
+### Added
+- Migration to backfill `ends_at` for existing trial subscriptions (sets `ends_at = trial_ends_at` where NULL)
+
+### Changed
+- `SubscriptionService::activateManual()` - Always sets `ends_at` regardless of trial status
+- `SubscriptionService::renewManual()` - No longer clears `trial_ends_at` during renewal
+
 ## [1.6.2] - 2026-01-17
 
 ### Added

@@ -63,7 +63,7 @@ class SubscriptionService
                 'status' => 'active',
                 'provider' => 'manual',
                 'trial_ends_at' => $isTrial ? now()->addDays($days) : null,
-                'ends_at' => $isTrial ? null : now()->addDays($days),
+                'ends_at' => now()->addDays($days), // Siempre establecer ends_at (para validaciones del agente)
                 'next_billing_date' => now()->addDays($days), // Siempre establecer próxima facturación
             ]);
         } else {
@@ -73,7 +73,7 @@ class SubscriptionService
                 'status' => 'active',
                 'provider' => 'manual',
                 'trial_ends_at' => $isTrial ? now()->addDays($days) : null,
-                'ends_at' => $isTrial ? null : now()->addDays($days),
+                'ends_at' => now()->addDays($days), // Siempre establecer ends_at (para validaciones del agente)
                 'next_billing_date' => now()->addDays($days), // Siempre establecer próxima facturación
             ]);
         }
@@ -109,7 +109,7 @@ class SubscriptionService
         $subscription->update([
             'status' => 'active',
             'ends_at' => $newEndsAt,
-            'trial_ends_at' => null,
+            // No modificar trial_ends_at para preservar histórico del período de prueba
         ]);
 
         // Eliminar notificaciones previas para nuevo periodo
