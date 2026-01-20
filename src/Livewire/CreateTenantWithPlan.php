@@ -30,7 +30,8 @@ class CreateTenantWithPlan extends Component
     protected $messages = [
         'name.required' => 'El nombre del tenant es obligatorio.',
         'name.min' => 'El nombre debe tener al menos 3 caracteres.',
-        'name.max' => 'El nombre no puede exceder 255 caracteres.',n        'plan_id.required' => 'Debes seleccionar un plan.',
+        'name.max' => 'El nombre no puede exceder 255 caracteres.',
+        'plan_id.required' => 'Debes seleccionar un plan.',
         'plan_id.exists' => 'El plan seleccionado no es válido.',
         'terms_accepted.required' => 'Debes aceptar los términos y condiciones.',
         'terms_accepted.accepted' => 'Debes aceptar los términos y condiciones.',
