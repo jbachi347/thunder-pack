@@ -219,4 +219,64 @@
             </div>
         </div>
     @endif
+
+    <!-- Subscription Form Modal -->
+    @if($showSubscriptionForm)
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-50" wire:click="closeSubscriptionForm"></div>
+        <div class="fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6" @click.stop>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                        Crear Suscripción Manual
+                    </h3>
+                    
+                    <form wire:submit.prevent="createSubscription" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Plan <span class="text-red-500">*</span>
+                            </label>
+                            <select wire:model="selectedPlanId"
+                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2 @error('selectedPlanId') border-red-500 @enderror">
+                                <option value="">Seleccionar plan...</option>
+                                @foreach(\\ThunderPack\\Models\\Plan::where('is_active', true)->get() as $plan)
+                                    <option value="{{ $plan->id }}">{{ $plan->name }} - ${{ number_format($plan->price_monthly, 2) }}/mes</option>
+                                @endforeach
+                            </select>
+                            @error('selectedPlanId') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Días de suscripción <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" wire:model="subscriptionDays" min="1" max="365"
+                                   class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2 @error('subscriptionDays') border-red-500 @enderror">
+                            @error('subscriptionDays') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Duración de la suscripción (1-365 días)</p>
+                        </div>
+
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" wire:model="isTrial"
+                                       class="rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600">
+                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Es período de prueba</span>
+                            </label>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Si está marcado, se establecerá como trial_ends_at</p>
+                        </div>
+
+                        <div class="flex justify-end space-x-3 pt-4 border-t dark:border-gray-700">
+                            <button type="button" wire:click="closeSubscriptionForm"
+                                    class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
+                                Cancelar
+                            </button>
+                            <button type="submit"
+                                    class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
+                                Crear
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

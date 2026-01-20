@@ -120,31 +120,14 @@
                                 </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
-                                @if($tenant->subscriptions->first())
-                                    @php
-                                        $subscription = $tenant->subscriptions->first();
-                                        $status = $subscription->status;
-                                        $statusColors = [
-                                            'active' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-                                            'trialing' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-                                            'past_due' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-                                            'canceled' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-                                        ];
-                                        $colorClass = $statusColors[$status] ?? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-                                    @endphp
-                                    <div>
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $colorClass }}">
-                                            {{ ucfirst($status) }}
-                                        </span>
+                                <div>
+                                    @livewire('thunder-pack::subscription-status-badge', ['tenant' => $tenant], key('sub-badge-'.$tenant->id))
+                                    @if($tenant->subscriptions->first())
                                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                            {{ $subscription->plan->name }}
+                                            {{ $tenant->subscriptions->first()->plan->name }}
                                         </p>
-                                    </div>
-                                @else
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                                        Sin suscripción
-                                    </span>
-                                @endif
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                 <div>

@@ -29,6 +29,12 @@ class TenantShow extends Component
     public $testPhoneId = null;
     public $testMessage = '';
 
+    // Create subscription form
+    public $showSubscriptionForm = false;
+    public $selectedPlanId = '';
+    public $subscriptionDays = 30;
+    public $isTrial = false;
+
     protected $queryString = ['activeTab'];
 
     public function mount(Tenant $tenant)
@@ -135,6 +141,67 @@ class TenantShow extends Component
         $phone = TenantWhatsappPhone::findOrFail($phoneId);
         $phone->update(['is_default' => true]);
         session()->flash('message', 'Teléfono marcado como predeterminado');
+    }
+
+    public function resetPhoneForm()
+    {
+        $this->showPhoneForm = false;
+        $this->editingPhoneId = null;
+        $this->phoneNumber = '';
+        $this->instanceName = '';
+        $this->isDefault = false;
+        $this->isActive = true;
+        $this->selectedNotificationTypes = [];
+        $this->resetValidation();
+    }
+
+    // ========== Subscription Management ==========
+
+    public function openSubscriptionForm()
+    {
+        $this->showSubscriptionForm = true;
+        $this->selectedPlanId = '';
+        $this->subscriptionDays = 30;
+        $this->isTrial = false;
+        $this->resetValidation();
+    }
+
+    public function createSubscription()
+    {
+        $this->validate([
+            'selectedPlanId' => 'required|exists:plans,id',
+            'subscriptionDays' => 'required|integer|min:1|max:365',
+            'isTrial' => 'boolean',
+        ], [
+            'selectedPlanId.required' => 'Debes seleccionar un plan',
+            'subscriptionDays.required' => 'Los días son requeridos',
+            'subscriptionDays.min' => 'Mínimo 1 día',
+            'subscriptionDays.max' => 'Máximo 365 días',
+        ]);
+
+        try {
+            $plan = \ThunderPack\Models\Plan::findOrFail($this->selectedPlanId);
+            $subscriptionService = app(\ThunderPack\Services\SubscriptionService::class);
+            
+            $subscriptionService->activateManual(
+                $this->tenant,
+                $plan,
+                $this->subscriptionDays,
+                $this->isTrial
+            );
+
+            session()->flash('message', 'Suscripción creada exitosamente');
+            $this->showSubscriptionForm = false;
+            $this->tenant->refresh();
+        } catch (Exception $e) {
+            session()->flash('error', 'Error al crear suscripción: ' . $e->getMessage());
+        }
+    }
+
+    public function closeSubscriptionForm()
+    {
+        $this->showSubscriptionForm = false;
+        $this->resetValidation();
     }
 
     public function resetPhoneForm()
