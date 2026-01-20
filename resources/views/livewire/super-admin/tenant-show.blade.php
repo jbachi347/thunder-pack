@@ -238,7 +238,7 @@
                             <select wire:model="selectedPlanId"
                                     class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md text-sm px-3 py-2 @error('selectedPlanId') border-red-500 @enderror">
                                 <option value="">Seleccionar plan...</option>
-                                @foreach(\\ThunderPack\\Models\\Plan::where('is_active', true)->get() as $plan)
+                                @foreach(\ThunderPack\Models\Plan::all() as $plan)
                                     <option value="{{ $plan->id }}">{{ $plan->name }} - ${{ number_format($plan->price_monthly, 2) }}/mes</option>
                                 @endforeach
                             </select>
