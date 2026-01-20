@@ -204,18 +204,6 @@ class TenantShow extends Component
         $this->resetValidation();
     }
 
-    public function resetPhoneForm()
-    {
-        $this->showPhoneForm = false;
-        $this->editingPhoneId = null;
-        $this->phoneNumber = '';
-        $this->instanceName = '';
-        $this->isDefault = false;
-        $this->isActive = true;
-        $this->selectedNotificationTypes = [];
-        $this->resetValidation();
-    }
-
     // ========== Test Message ==========
 
     public function openTestForm($phoneId = null)
