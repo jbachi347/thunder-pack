@@ -5,7 +5,7 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.4] - 2026-01-19
+## [1.6.5] - 2026-01-19
 
 ### Added
 - Create subscription functionality in SuperAdmin tenant detail page
@@ -21,10 +21,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixed "Marcar Vencida" button being invisible in dark mode (white text on white background)
   - All action buttons now have proper dark mode variants (Renovar, Activar, Marcar Vencida, Cancelar)
 - Removed duplicate "Usuarios" link in SuperAdmin sidebar
+- Fixed duplicate `resetPhoneForm()` method in TenantShow component
 
 ### Changed
 - TenantsIndex now uses `subscription-status-badge` component instead of manual status badges
   - Provides consistent UX between tenant selector and admin panel
+
+## [1.6.4] - 2026-01-19
+
+### Internal
+- Skipped version (testing release)
 
 ## [1.6.3] - 2026-01-19
 
