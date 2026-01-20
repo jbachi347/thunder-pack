@@ -19,12 +19,16 @@ class Tenant extends Model
         'storage_quota_bytes',
         'storage_used_bytes',
         'data',
+        'terms_accepted_at',
+        'privacy_accepted_at',
     ];
 
     protected $casts = [
         'storage_quota_bytes' => 'integer',
         'storage_used_bytes' => 'integer',
         'data' => 'array',
+        'terms_accepted_at' => 'datetime',
+        'privacy_accepted_at' => 'datetime',
     ];
 
     /**

@@ -5,6 +5,24 @@ All notable changes to `thunder-pack` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.6] - 2026-01-19
+
+### Added
+- Terms and privacy acceptance system for tenant creation
+  - Added `terms_accepted` and `privacy_accepted` boolean properties to `CreateTenantWithPlan` component
+  - Added validation rules (required|accepted) for both acceptance fields
+  - Added Spanish error messages for acceptance validation failures
+  - Store `terms_accepted_at` and `privacy_accepted_at` timestamps when creating tenant
+  - Added acceptance checkboxes to tenant creation modal UI with links to legal pages
+  - Reset acceptance fields when modal is closed
+- Database support for acceptance tracking
+  - Added `terms_accepted_at` and `privacy_accepted_at` (timestamp nullable) to tenants table
+  - Updated Tenant model with new fillable fields and datetime casts
+
+### Changed
+- Tenant creation now requires explicit acceptance of terms and privacy policy
+- CreateTenantWithPlan modal now includes acceptance section with proper styling and validation
+
 ## [1.6.5] - 2026-01-19
 
 ### Added

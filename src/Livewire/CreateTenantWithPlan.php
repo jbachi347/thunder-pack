@@ -15,20 +15,27 @@ class CreateTenantWithPlan extends Component
     public $plan_id = '';
     public $plans;
     public $showModal = false;
+    public $terms_accepted = false;
+    public $privacy_accepted = false;
 
     protected $listeners = ['open-create-tenant-modal' => 'openModal'];
 
     protected $rules = [
         'name' => 'required|string|min:3|max:255',
         'plan_id' => 'required|exists:plans,id',
+        'terms_accepted' => 'required|accepted',
+        'privacy_accepted' => 'required|accepted',
     ];
 
     protected $messages = [
         'name.required' => 'El nombre del tenant es obligatorio.',
         'name.min' => 'El nombre debe tener al menos 3 caracteres.',
-        'name.max' => 'El nombre no puede exceder 255 caracteres.',
-        'plan_id.required' => 'Debes seleccionar un plan.',
+        'name.max' => 'El nombre no puede exceder 255 caracteres.',n        'plan_id.required' => 'Debes seleccionar un plan.',
         'plan_id.exists' => 'El plan seleccionado no es válido.',
+        'terms_accepted.required' => 'Debes aceptar los términos y condiciones.',
+        'terms_accepted.accepted' => 'Debes aceptar los términos y condiciones.',
+        'privacy_accepted.required' => 'Debes aceptar la política de privacidad.',
+        'privacy_accepted.accepted' => 'Debes aceptar la política de privacidad.',
     ];
 
     public function mount()
@@ -46,7 +53,7 @@ class CreateTenantWithPlan extends Component
     public function closeModal()
     {
         $this->showModal = false;
-        $this->reset(['name', 'plan_id']);
+        $this->reset(['name', 'plan_id', 'terms_accepted', 'privacy_accepted']);
         $this->resetValidation();
     }
 
@@ -61,6 +68,8 @@ class CreateTenantWithPlan extends Component
             $tenant = Tenant::create([
                 'name' => $this->name,
                 'owner_id' => Auth::id(),
+                'terms_accepted_at' => now(),
+                'privacy_accepted_at' => now(),
             ]);
 
             // 2. Asociar usuario actual al tenant

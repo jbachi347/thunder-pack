@@ -56,8 +56,55 @@
                                         @enderror
                                     </div>
 
+                                    <!-- Aceptación de Términos -->
+                                    <div class="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                        <p class="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                            Para crear el tenant, debes aceptar lo siguiente:
+                                        </p>
+
+                                        <!-- Terms Checkbox -->
+                                        <div class="flex items-start">
+                                            <div class="flex items-center h-5">
+                                                <input 
+                                                    id="terms_accepted" 
+                                                    wire:model="terms_accepted"
+                                                    type="checkbox" 
+                                                    class="rounded border-gray-300 dark:border-gray-700 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900"
+                                                    required>
+                                            </div>
+                                            <div class="ml-2 text-xs">
+                                                <label for="terms_accepted" class="text-gray-700 dark:text-gray-300">
+                                                    Acepto los <a href="{{ route('legal.terms') }}" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">Términos y Condiciones</a> *
+                                                </label>
+                                                @error('terms_accepted')
+                                                    <p class="text-red-600 dark:text-red-400 mt-1">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <!-- Privacy Checkbox -->
+                                        <div class="flex items-start">
+                                            <div class="flex items-center h-5">
+                                                <input 
+                                                    id="privacy_accepted" 
+                                                    wire:model="privacy_accepted"
+                                                    type="checkbox" 
+                                                    class="rounded border-gray-300 dark:border-gray-700 text-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-900"
+                                                    required>
+                                            </div>
+                                            <div class="ml-2 text-xs">
+                                                <label for="privacy_accepted" class="text-gray-700 dark:text-gray-300">
+                                                    Acepto la <a href="{{ route('legal.privacy') }}" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">Política de Privacidad</a> *
+                                                </label>
+                                                @error('privacy_accepted')
+                                                    <p class="text-red-600 dark:text-red-400 mt-1">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- Información del Trial -->
-                                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-3">
+                                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-3 mt-4">
                                         <p class="text-xs text-blue-800 dark:text-blue-300">
                                             <strong>Trial gratuito de 7 días</strong><br>
                                             Tu tenant se creará con acceso completo por 7 días sin cargo.
